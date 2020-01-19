@@ -22,9 +22,12 @@ int main()
     window = sfRenderWindow_createUnicode(mode, ptrUnicodeTitle, sfClose, NULL);
     if (!window)
         return 1;
-    sfVector2f windowPos;
-    //windowPos.x = sfRenderWindow_getSize()
-    //sfWindow_setPosition(window, )
+    sfVector2i windowPos;
+    sfVideoMode videoMode;
+    videoMode = sfVideoMode_getDesktopMode();
+    windowPos.x = videoMode.width/2 - xSize/2;
+    windowPos.y = videoMode.height/2 - ySize/2;
+    sfRenderWindow_setPosition(window, windowPos);
 
     /* Load a sprite to display */
     texture = sfTexture_createFromFile("title_image.jpeg", NULL);
