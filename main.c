@@ -27,7 +27,7 @@ int main()
     //sfWindow_setPosition(window, )
 
     /* Load a sprite to display */
-    texture = sfTexture_createFromFile("cute_image.jpg", NULL);
+    texture = sfTexture_createFromFile("title_image.jpeg", NULL);
     if (!texture)
         return 1;
     sprite = sfSprite_create();
@@ -44,8 +44,8 @@ int main()
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 50);
     sfVector2f textPos;
-    textPos.x=50;
-    textPos.y=ySize/2;
+    textPos.x=25;
+    textPos.y=ySize/3;
     sfText_setPosition(text, textPos);
 
     /* Load a music to play */
