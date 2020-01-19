@@ -6,7 +6,8 @@
 
 int main()
 {
-    sfVideoMode mode = {800, 600, 32};
+    unsigned int xSize = 800, ySize = 600;
+    sfVideoMode mode = {xSize, ySize, 32};
     sfRenderWindow* window;
     sfTexture* texture;
     sfSprite* sprite;
@@ -16,9 +17,14 @@ int main()
     sfEvent event;
 
     /* Create the main window */
-    window = sfRenderWindow_create(mode, "Wy\230cigi samochodowe", sfResize | sfClose, NULL);
+    const wchar_t titlePL[] = L"Wyścigi samochodowe";
+    const sfUint32 *ptrUnicodeTitle = (const sfUint32 *) &titlePL;
+    window = sfRenderWindow_createUnicode(mode, ptrUnicodeTitle, sfClose, NULL);
     if (!window)
         return 1;
+    sfVector2f windowPos;
+    //windowPos.x = sfRenderWindow_getSize()
+    //sfWindow_setPosition(window, )
 
     /* Load a sprite to display */
     texture = sfTexture_createFromFile("cute_image.jpg", NULL);
@@ -35,9 +41,12 @@ int main()
     const wchar_t stringPL[] = L"Kliknij, aby rozpocząć wyścig!";
     const sfUint32 *ptrUnicodeString = (const sfUint32 *) &stringPL;
     sfText_setUnicodeString(text, ptrUnicodeString);
-    //sfText_setUnicodeString(text, L"Kliknij aby zacz\245\206 gr\251");
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 50);
+    sfVector2f textPos;
+    textPos.x=50;
+    textPos.y=ySize/2;
+    sfText_setPosition(text, textPos);
 
     /* Load a music to play */
     music = sfMusic_createFromFile("nice_music.ogg");
