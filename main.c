@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <SFML/Audio.h>
 #include <SFML/Graphics.h>
 
@@ -29,9 +31,10 @@ int main()
     font = sfFont_createFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
     if (!font)
         return 1;
-    text = sfText_creatgite();
-    dstring test = "안녕, こんにちは";
-    sfText_setUnicodeString( text, test);
+    text = sfText_create();
+    const wchar_t stringPL[] = L"Kliknij, aby rozpocząć wyścig!";
+    const sfUint32 *ptrUnicodeString = (const sfUint32 *) &stringPL;
+    sfText_setUnicodeString(text, ptrUnicodeString);
     //sfText_setUnicodeString(text, L"Kliknij aby zacz\245\206 gr\251");
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 50);
