@@ -78,6 +78,15 @@ int main()
 
         /* Update the window */
         sfRenderWindow_display(window);
+
+
+        if(sfMouse_isButtonPressed(sfMouseLeft) ){
+            sfVector2i mousePos = sfMouse_getPosition((const sfWindow *) window);
+            if(mousePos.x > 0.0 && mousePos.x < xSize && mousePos.y > 0.0 && mousePos.y < ySize ){
+                sfRenderWindow_close(window);
+            }
+        }
+
     }
 
     /* Cleanup resources */
@@ -87,6 +96,6 @@ int main()
     sfSprite_destroy(sprite);
     sfTexture_destroy(texture);
     sfRenderWindow_destroy(window);
-    printf("\206");
+
     return 0;
 }
