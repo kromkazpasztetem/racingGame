@@ -1,19 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include <SFML/Audio.h>
-#include <SFML/Graphics.h>
-#include "windowManager.h"
 #include "welcomeWindow.h"
-#include "gameWindow.h"
 
-int main()
+int welcomeWindow()
 {
     sfRenderWindow* welcomeWindow = managerCreateWindow(L"Wyścigi samochodowe",800,600,true,1);
     if (welcomeWindow == NULL)
         return 1;
-
     unsigned int xSize = 800, ySize = 600;
     sfVideoMode mode = {xSize, ySize, 32};
     sfRenderWindow* window;
@@ -24,12 +15,16 @@ int main()
     sfMusic* music;
     sfEvent event;
 
-    /* Create the main window */
+    /* Set a title of the window in Unicode (with PL characters) */
     const wchar_t titlePL[] = L"Wyścigi samochodowe";
     const sfUint32 *ptrUnicodeTitle = (const sfUint32 *) &titlePL;
+
+    /* Create the main window */
     window = sfRenderWindow_createUnicode(mode, ptrUnicodeTitle, sfClose, NULL);
     if (!window)
         return 1;
+
+    /* Center the window */
     sfVector2i windowPos;
     sfVideoMode screenMode;
     screenMode = sfVideoMode_getDesktopMode();
@@ -38,13 +33,13 @@ int main()
     sfRenderWindow_setPosition(window, windowPos);
 
     /* Load a sprite to display */
-    texture = sfTexture_createFromFile("title_image.jpeg", NULL);
+    texture = sfTexture_createFromFile("welcome_image.jpeg", NULL);
     if (!texture)
         return 1;
     sprite = sfSprite_create();
     sfSprite_setTexture(sprite, texture, sfTrue);
 
-    /* Create a graphical text to display */
+    /* Create a graphical text (in Unicode) to display */
     font = sfFont_createFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
     if (!font)
         return 1;
@@ -54,6 +49,8 @@ int main()
     sfText_setUnicodeString(text, ptrUnicodeString);
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 50);
+
+    /* Center the text */
     sfFloatRect textRect = sfText_getLocalBounds(text);
     sfVector2f textPos;
     textPos.x = (xSize - textRect.width) /2;
@@ -91,24 +88,12 @@ int main()
         /* Update the window */
         sfRenderWindow_display(window);
 
-
+        /* Close the window if pressed */
         if(sfMouse_isButtonPressed(sfMouseLeft) ){
+            /* Check if mouse is inside the window */
             sfVector2i mousePos = sfMouse_getPosition((const sfWindow *) window);
-            if(mousePos.x > 0.0 && mousePos.x < xSize && mousePos.y > 0.0 && mousePos.y < ySize ){
-                sfRenderWindow_close(window);/*
-                sfVector2u screenSize;
-                screenSize.x = screenMode.width;
-                screenSize.y = screenMode.height;
-                sfRenderWindow_setSize(window, screenSize);
-                sfVector2i zero;
-                zero.x =0;
-                zero.y = 0;
-                sfRenderWindow_setPosition(window,zero);
-                sfTexture* track = sfTexture_createFromFile("track_image.jpeg", NULL);
-                if (!track)
-                    return 1;
-                sfSprite_setTexture(sprite, track, sfTrue);*/
-            }
+            if(mousePos.x > 0.0 && mousePos.x < xSize && mousePos.y > 0.0 && mousePos.y < ySize )
+                sfRenderWindow_close(window);
         }
 
     }
