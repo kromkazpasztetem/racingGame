@@ -1,7 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <SFML/Audio.h>
-#include <SFML/Graphics.h>
+#include "headers.h"
 
-sfRenderWindow* managerCreateWindow (const wchar_t titlePL[], uint xSize, uint ySize, sfBool center, uint backgroundID);
+struct managerWindowInfo{
+    sfRenderWindow* window;
+    sfSprite* backgroundSprite;
+    sfTexture* backgroundTexture;
+};
+
+typedef struct managerWindowInfo *mWindowInfo;
+
+mWindowInfo mInitInfo(sfRenderWindow* window, sfTexture* texture, sfSprite* sprite);
+mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBool center, uint backgroundID);

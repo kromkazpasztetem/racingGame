@@ -1,46 +1,23 @@
-#include "welcomeWindow.h"
+#include "headers.h"
 
-int welcomeWindow()
-{
-    sfRenderWindow* welcomeWindow = managerCreateWindow(L"Wyścigi samochodowe",800,600,true,1);
-    if (welcomeWindow == NULL)
+int welcomeWindow(){
+    sfVector2u welcomeWindowSize;
+    welcomeWindowSize.x = 800, welcomeWindowSize.y = 600;
+
+    mWindowInfo welcomeWindowInfo = mCreateWindow(L"Wyścigi samochodowe",welcomeWindowSize,true,1);
+    sfRenderWindow* window1 = welcomeWindowInfo->window;
+    sfTexture* backgroundTexture = welcomeWindowInfo->backgroundTexture;
+    sfSprite* backgroundSprite = welcomeWindowInfo->backgroundSprite;
+
+    if (window1 == NULL)
         return 1;
-    unsigned int xSize = 800, ySize = 600;
-    sfVideoMode mode = {xSize, ySize, 32};
-    sfRenderWindow* window;
-    sfTexture* texture;
-    sfSprite* sprite;
     sfFont* font;
     sfText* text;
     sfMusic* music;
     sfEvent event;
 
-    /* Set a title of the window in Unicode (with PL characters) */
-    const wchar_t titlePL[] = L"Wyścigi samochodowe";
-    const sfUint32 *ptrUnicodeTitle = (const sfUint32 *) &titlePL;
-
-    /* Create the main window */
-    window = sfRenderWindow_createUnicode(mode, ptrUnicodeTitle, sfClose, NULL);
-    if (!window)
-        return 1;
-
-    /* Center the window */
-    sfVector2i windowPos;
-    sfVideoMode screenMode;
-    screenMode = sfVideoMode_getDesktopMode();
-    windowPos.x = screenMode.width/2 - xSize/2;
-    windowPos.y = screenMode.height/2 - ySize/2;
-    sfRenderWindow_setPosition(window, windowPos);
-
-    /* Load a sprite to display */
-    texture = sfTexture_createFromFile("welcome_image.jpeg", NULL);
-    if (!texture)
-        return 1;
-    sprite = sfSprite_create();
-    sfSprite_setTexture(sprite, texture, sfTrue);
-
     /* Create a graphical text (in Unicode) to display */
-    font = sfFont_createFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
+    font = sfFont_createFromFile("./fonts/font1.otf");
     if (!font)
         return 1;
     text = sfText_create();
@@ -53,12 +30,12 @@ int welcomeWindow()
     /* Center the text */
     sfFloatRect textRect = sfText_getLocalBounds(text);
     sfVector2f textPos;
-    textPos.x = (xSize - textRect.width) /2;
-    textPos.y = ySize/3;
+    textPos.x = (welcomeWindowSize.x - textRect.width) /2;
+    textPos.y = welcomeWindowSize.y/3;
     sfText_setPosition(text, textPos);
 
     /* Load a music to play */
-    music = sfMusic_createFromFile("welcome_music.ogg");
+    music = sfMusic_createFromFile("./music/welcome_music.ogg");
     if (!music)
         return 1;
 
@@ -66,34 +43,34 @@ int welcomeWindow()
     sfMusic_play(music);
 
     /* Start the game loop */
-    while (sfRenderWindow_isOpen(window))
+    while (sfRenderWindow_isOpen(window1))
     {
         /* Process events */
-        while (sfRenderWindow_pollEvent(window, &event))
+        while (sfRenderWindow_pollEvent(window1, &event))
         {
             /* Close window : exit */
             if (event.type == sfEvtClosed)
-                sfRenderWindow_close(window);
+                sfRenderWindow_close(window1);
         }
 
         /* Clear the screen */
-        sfRenderWindow_clear(window, sfBlack);
+        sfRenderWindow_clear(window1, sfBlack);
 
         /* Draw the sprite */
-        sfRenderWindow_drawSprite(window, sprite, NULL);
+        sfRenderWindow_drawSprite(window1, backgroundSprite, NULL);
 
         /* Draw the text */
-        sfRenderWindow_drawText(window, text, NULL);
+        sfRenderWindow_drawText(window1, text, NULL);
 
         /* Update the window */
-        sfRenderWindow_display(window);
+        sfRenderWindow_display(window1);
 
         /* Close the window if pressed */
         if(sfMouse_isButtonPressed(sfMouseLeft) ){
             /* Check if mouse is inside the window */
-            sfVector2i mousePos = sfMouse_getPosition((const sfWindow *) window);
-            if(mousePos.x > 0.0 && mousePos.x < xSize && mousePos.y > 0.0 && mousePos.y < ySize )
-                sfRenderWindow_close(window);
+            sfVector2i mousePos = sfMouse_getPosition((const sfWindow *) window1);
+            if(mousePos.x > 0.0 && mousePos.x < welcomeWindowSize.x && mousePos.y > 0.0 && mousePos.y < welcomeWindowSize.y )
+                sfRenderWindow_close(window1);
         }
 
     }
@@ -102,9 +79,9 @@ int welcomeWindow()
     sfMusic_destroy(music);
     sfText_destroy(text);
     sfFont_destroy(font);
-    sfSprite_destroy(sprite);
-    sfTexture_destroy(texture);
-    sfRenderWindow_destroy(window);
+    sfSprite_destroy(backgroundSprite);
+    sfTexture_destroy(backgroundTexture);
+    sfRenderWindow_destroy(window1);
 
     return 0;
 }

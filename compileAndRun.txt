@@ -1,2 +1,3 @@
 gcc -Wall main.c -lcsfml-graphics -lcsfml-window -lcsfml-audio -o game11
 ./game1
+1px * 0,6(063) = 1m
