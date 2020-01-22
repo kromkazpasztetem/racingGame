@@ -1,21 +1,46 @@
 #include "headers.h"
 
-mWindowInfo mInitInfo(sfRenderWindow* window, sfTexture* texture, sfSprite* sprite){
+mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite){
     mWindowInfo newInfo;
     if ( (newInfo = (mWindowInfo)malloc ( sizeof(struct managerWindowInfo) )) == NULL )
         return false;
     newInfo->window = window;
     newInfo->backgroundSprite = sprite;
-    newInfo->backgroundTexture = texture;
     return newInfo;
 }
 
-mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBool center, uint backgroundID){
+sfBool insideSprite(sfVector2f pos, sfVector2f center, sfVector2f size){
+    if(pos.x > center.x - size.x/2 && pos.x < center.x + size.x/2
+       && pos.y > center.y - size.y/2 && pos.y < center.y + size.y/2)
+        return sfTrue;
+    return sfFalse;
+}
+
+sfSprite* mCreateSprite(char *fileName, sfBool setCenter){
+    char spriteName [50];
+    sprintf(spriteName,"./images/%s.png", fileName);
+    sfTexture* texture = sfTexture_createFromFile(spriteName, NULL);
+    if (!texture)
+        return NULL;
+    sfSprite* sprite = sfSprite_create();
+    sfSprite_setTexture(sprite, texture, sfTrue);
+    if(setCenter){
+        sfFloatRect size = sfSprite_getLocalBounds(sprite);
+        sfVector2f center;
+        center.x = size.width/2;
+        center.y = size.height/2;
+        sfSprite_setOrigin(sprite, center);
+    }
+    return sprite;
+}
+
+//sfText* mCreateText(char *text)
+
+mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBool center, char backgroundName []){
     sfRenderWindow* window;
-    sfTexture* texture;
     sfSprite* sprite;
 
-    /* Set a size of the window */
+    // Set a size of the window (0 - maximize window)
     sfVideoMode screenMode;
     screenMode = sfVideoMode_getDesktopMode();
     if(windowSize.x == 0){
@@ -24,28 +49,24 @@ mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBoo
     }
     sfVideoMode mode = {windowSize.x, windowSize.y, 32};
 
-    /* Set a title of the window in Unicode (with PL characters) */
+    // Set a title of the window in Unicode (with PL characters)
     const sfUint32 *ptrUnicodeTitle = (const sfUint32 *) &titlePL;
 
-    /* Create the main window */
+    // Create the main window
     window = sfRenderWindow_createUnicode(mode, ptrUnicodeTitle, sfClose, NULL);
     if (!window)
         return NULL;
 
-    /* Center the window */
-    sfVector2i windowPos;
-    windowPos.x = (screenMode.width - windowSize.x)/2;
-    windowPos.y = (screenMode.height - windowSize.y)/2;
-    sfRenderWindow_setPosition(window, windowPos);
+    if(center){
+        // Center the window
+        sfVector2i windowPos;
+        windowPos.x = (screenMode.width - windowSize.x)/2;
+        windowPos.y = (screenMode.height - windowSize.y)/2;
+        sfRenderWindow_setPosition(window, windowPos);
+    }
 
-    /* Draw background */
-    char backgroundName [50];
-    sprintf(backgroundName,"./images/background%d.png", backgroundID);
-    texture = sfTexture_createFromFile(backgroundName, NULL);
-    if (!texture)
-        return NULL;
-    sprite = sfSprite_create();
-    sfSprite_setTexture(sprite, texture, sfTrue);
+    // Create background
+    sprite = mCreateSprite(backgroundName, sfFalse);
 
-    return mInitInfo(window, texture, sprite);
+    return mInitInfo(window, sprite);
 }
