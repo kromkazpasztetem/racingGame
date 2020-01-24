@@ -1,0 +1,3 @@
+/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/rebuild_cache.dir
+/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/fullGame.dir
+/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/edit_cache.dir

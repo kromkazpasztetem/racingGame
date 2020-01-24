@@ -14,6 +14,26 @@ int gameWindow(){
     //sfMusic* music;
     sfEvent event;
 
+    // Read a track from file as a 0-1 table
+    FILE* binaryFile = fopen( "binaryTrack.txt", "r");
+    if( binaryFile == NULL ){
+        return 1;
+    }
+    sfVector2i binaryMapSize;
+    binaryMapSize.x = 1600;
+    binaryMapSize.y = 850;
+    char binaryMap[binaryMapSize.x][binaryMapSize.y];
+    for(int y=0; y<binaryMapSize.y; y++){
+        for(int x=0; x<binaryMapSize.x; x++){
+            binaryMap[x][y] = getc(binaryFile) - '0';
+        }
+        getc(binaryFile);
+        getc(binaryFile);
+        //putc('\n', testFile);
+    }
+    fclose(binaryFile);
+    float scale = (float) (binaryMapSize.x)/(float) (screenSize.x);
+
     sfSprite* car1 = mCreateSprite("car1", sfTrue);
     sfSprite* car2 = mCreateSprite("car2", sfTrue);
     sfFloatRect sizeCarTemp = sfSprite_getLocalBounds(car1);
@@ -41,24 +61,26 @@ int gameWindow(){
     while (sfRenderWindow_isOpen(window2))
     {
         // Save a mouse position
-        sfVector2i mousePosTemp = sfMouse_getPosition((const sfWindow *) window2);
-        sfVector2f mousePos;
-        mousePos.x = mousePosTemp.x;
-        mousePos.y = mousePosTemp.y;
+        sfVector2i mousePosI = sfMouse_getPosition((const sfWindow *) window2);
+        sfVector2f mousePosF;
+        mousePosF.x = (float) mousePosI.x;
+        mousePosF.y = (float) mousePosI.y;
 
         // Process events
         while (sfRenderWindow_pollEvent(window2, &event))
         {
             // Close window : exit
-            if (event.type == sfEvtClosed)
+            if (event.type == sfEvtClosed){
                 sfRenderWindow_close(window2);
+                return 0;
+            }
         }
 
         //Check what was clicked
         if(sfMouse_isButtonPressed(sfMouseLeft)) {
-            if (insideSprite(mousePos, car1pos, sizeCar)) {
+            if (insideSprite(mousePosF, car1pos, sizeCar)) {
 
-            } else if (insideSprite(mousePos, car2pos, sizeCar)) {
+            } else if (insideSprite(mousePosF, car2pos, sizeCar)) {
 
             }
         }
@@ -74,11 +96,12 @@ int gameWindow(){
         sfRenderWindow_drawSprite(window2, car2, NULL);
 
         // Print a coordinates of the mouse (temp)
-        // /*
-        sprintf(string,"%f %f", mousePos.x, mousePos.y);
+        int onTrack;
+        onTrack = binaryMap[mRound(mousePosF.x * scale)][mRound(mousePosF.y * scale)];
+
+        sprintf(string, "x:%d y:%d onTrack:%d", mousePosI.x, mousePosI.y, onTrack);
         sfText_setString(text, string);
         sfRenderWindow_drawText(window2, text, NULL);
-        // */
 
         // Update the window
         sfRenderWindow_display(window2);
@@ -91,6 +114,7 @@ int gameWindow(){
     sfFont_destroy(font);
     sfSprite_destroy(backgroundSprite);
     sfRenderWindow_destroy(window2);
+    free(binaryMap);
 
     return 0;
 }

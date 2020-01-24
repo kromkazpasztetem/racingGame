@@ -1,0 +1,4 @@
+/home/rozkurcz/Pobrane/CLion/clion-2019.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/rozkurcz/Dokumenty/c/game1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/rozkurcz/Dokumenty/c/game1

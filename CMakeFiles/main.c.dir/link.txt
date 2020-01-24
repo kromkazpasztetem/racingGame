@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/main.c.dir/welcomeWindow.c.o CMakeFiles/main.c.dir/gameWindow.c.o CMakeFiles/main.c.dir/windowManager.c.o  -o main.c 

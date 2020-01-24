@@ -1,5 +1,13 @@
 #include "headers.h"
 
+int mRound(float f){
+    int val = (int) f;
+    f-= (float) val;
+    if(f>0.5)
+        val++;
+    return val;
+}
+
 mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite){
     mWindowInfo newInfo;
     if ( (newInfo = (mWindowInfo)malloc ( sizeof(struct managerWindowInfo) )) == NULL )

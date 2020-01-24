@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/game1.dir/main.c.o CMakeFiles/game1.dir/welcomeWindow.c.o CMakeFiles/game1.dir/gameWindow.c.o  -o game1 

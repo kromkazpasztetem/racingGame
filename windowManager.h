@@ -1,5 +1,7 @@
 #include "headers.h"
 
+int mRound(float f);
+
 struct managerWindowInfo{
     sfRenderWindow* window;
     sfSprite* backgroundSprite;
