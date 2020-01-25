@@ -1,13 +1,13 @@
 #include "headers.h"
 
 int welcomeWindow(){
+
+    // Create window, set title, size, background, declare resources
     sfVector2u welcomeWindowSize;
     welcomeWindowSize.x = 800, welcomeWindowSize.y = 600;
-
     mWindowInfo welcomeWindowInfo = mCreateWindow(L"Wyścigi samochodowe",welcomeWindowSize,sfTrue,"background1");
     sfRenderWindow* window1 = welcomeWindowInfo->window;
     sfSprite* backgroundSprite = welcomeWindowInfo->backgroundSprite;
-
     if (window1 == NULL)
         return 1;
     sfFont* font;

@@ -32,12 +32,18 @@ sfCircleShape *mCircle(float radius, sfColor outlineColor){
     return circle;
 }
 
-void mVectorHead(sfVector2f pos){
+sfRectangleShape* mVectorTriangle(sfVector2f pos){
+    sfRectangleShape* triangle = sfRectangleShape_create();
 
+
+    return triangle;
 }
 
-void mVector(sfRenderWindow* window, sfVector2f posFrom, sfVector2f posTo){
+sfRectangleShape* mVectorLine(sfRenderWindow* window, sfVector2f posFrom, sfVector2f posTo){
+    sfRectangleShape* line = sfRectangleShape_create();
 
+
+    return line;
 }
 
 sfBool mInsideCircle(sfVector2f origin, float radius, sfVector2f point){
