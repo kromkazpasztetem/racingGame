@@ -51,11 +51,14 @@ int gameWindow(){
     sfVector2f car2pos;
     car2pos.x = 850;
     car2pos.y = 800;
-    sfSprite_setRotation(car1, 270);
-    sfSprite_setRotation(car2, 270);
 
     sfCircleShape* circle1 = mCircle(RADIUS, sfCyan);
     sfCircleShape* circle2 = mCircle(RADIUS, sfYellow);
+
+    sfVector2f vector2pos;
+    vector2pos.x = 100;
+    vector2pos.y = 820;
+    sfRectangleShape* vector2 = mVectorLine(car2pos, vector2pos, sfMagenta);
 
     // Draw the text
     font = sfFont_createFromFile("./fonts/font1.otf");
@@ -126,10 +129,11 @@ int gameWindow(){
         sfCircleShape_setPosition(circle2, car2pos);
         sfRenderWindow_drawCircleShape(window2, circle1, NULL);
         sfRenderWindow_drawCircleShape(window2, circle2, NULL);
+        sfRenderWindow_drawRectangleShape(window2, vector2, NULL);
 
         // Print a coordinates of the mouse (temp)
         int onTrack;
-        onTrack = binaryMap[mRound(mousePosF.x * scale)][mRound(mousePosF.y * scale)];
+        onTrack = binaryMap[fRound(mousePosF.x * scale)][fRound(mousePosF.y * scale)];
         sprintf(string, "x:%d y:%d onTrack:%d clicks:%d", mousePosI.x, mousePosI.y, onTrack, clicks);
         sfText_setString(text, string);
         sfRenderWindow_drawText(window2, text, NULL);

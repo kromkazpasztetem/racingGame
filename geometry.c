@@ -1,6 +1,6 @@
 #include "headers.h"
 
-int mRound(float f){
+int fRound(float f){
     int val = (int) f;
     f-= (float) val;
     if(f>0.5)
@@ -28,25 +28,50 @@ sfCircleShape *mCircle(float radius, sfColor outlineColor){
     sfColor empty = sfColor_fromInteger(0);
     sfCircleShape_setFillColor(circle, empty);
     sfCircleShape_setOutlineColor(circle, outlineColor);
-    sfCircleShape_setOutlineThickness(circle, 5);
+    sfCircleShape_setOutlineThickness(circle, 2);
     return circle;
 }
 
 sfRectangleShape* mVectorTriangle(sfVector2f pos){
     sfRectangleShape* triangle = sfRectangleShape_create();
-
+    //sfRectangleShape()
 
     return triangle;
 }
 
-sfRectangleShape* mVectorLine(sfRenderWindow* window, sfVector2f posFrom, sfVector2f posTo){
+sfRectangleShape* mVectorLine(sfVector2f fromPos, sfVector2f toPos, sfColor color){
     sfRectangleShape* line = sfRectangleShape_create();
-
+    sfVector2f size;
+    // a^2 + b^2 = c^2, length of vector (Pythagorean theorem)
+    size.x = sqrtf(fSquare(fAbs(fromPos.x - toPos.x)) + fSquare(fAbs(fromPos.y - toPos.y)) );
+    if(size.x == 0)
+        return NULL;
+    size.y = 2;
+    sfRectangleShape_setSize(line, size);
+    // Set origin in the first point
+    size.y /=2;
+    sfRectangleShape_setOrigin(line, size);
+    sfRectangleShape_setPosition(line, fromPos);
+    // Rotate line (arctan(y/x)=degree in radians)
+    float deg;
+    if(fromPos.x == toPos.x){
+        if(fromPos.x > toPos.x)
+            deg=270;
+        else
+            deg=90;
+    } else{
+        deg= atan2f(fromPos.y - toPos.y, fromPos.x - toPos.x);
+        // Convert radians to degrees
+        deg = deg *180/M_PI;
+    }
+    sfRectangleShape_rotate(line,deg);
+    sfRectangleShape_setFillColor(line, color);
 
     return line;
 }
 
 sfBool mInsideCircle(sfVector2f origin, float radius, sfVector2f point){
+    // |x1-x2|^2 + |y1-y2|^2 <= r^2, circle definition
     if( fSquare(fAbs(origin.x-point.x)) + fSquare(fAbs(origin.y-point.y)) <= fSquare(radius) )
         return sfTrue;
     return sfFalse;

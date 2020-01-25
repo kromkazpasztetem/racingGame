@@ -1,6 +1,6 @@
 #include "headers.h"
 
-int mRound(float f);
+int fRound(float f);
 
 struct managerWindowInfo{
     sfRenderWindow* window;

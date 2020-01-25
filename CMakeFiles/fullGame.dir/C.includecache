@@ -14,10 +14,6 @@ headers.h
 headers.h
 /home/rozkurcz/Dokumenty/c/game1/headers.h
 
-/home/rozkurcz/Dokumenty/c/game1/geometry.c
-headers.h
-/home/rozkurcz/Dokumenty/c/game1/headers.h
-
 /home/rozkurcz/Dokumenty/c/game1/geometry.h
 headers.h
 /home/rozkurcz/Dokumenty/c/game1/headers.h
@@ -28,6 +24,8 @@ stdio.h
 stdlib.h
 -
 string.h
+-
+math.h
 -
 SFML/Audio.h
 -

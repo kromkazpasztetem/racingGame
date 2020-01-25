@@ -1,1 +1,1 @@
-/usr/bin/cc -g   CMakeFiles/fullGame.dir/main.c.o CMakeFiles/fullGame.dir/welcomeWindow.c.o CMakeFiles/fullGame.dir/gameWindow.c.o CMakeFiles/fullGame.dir/windowManager.c.o CMakeFiles/fullGame.dir/geometry.c.o  -o fullGame -lcsfml-graphics -lcsfml-audio -lcsfml-window -lcsfml-system 
+/usr/bin/cc -g   CMakeFiles/fullGame.dir/main.c.o CMakeFiles/fullGame.dir/welcomeWindow.c.o CMakeFiles/fullGame.dir/gameWindow.c.o CMakeFiles/fullGame.dir/windowManager.c.o CMakeFiles/fullGame.dir/geometry.c.o  -o fullGame -lcsfml-graphics -lcsfml-audio -lcsfml-window -lcsfml-system -lm 
