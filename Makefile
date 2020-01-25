@@ -150,6 +150,33 @@ gameWindow.c.s:
 	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/gameWindow.c.s
 .PHONY : gameWindow.c.s
 
+geometry.o: geometry.c.o
+
+.PHONY : geometry.o
+
+# target to build an object file
+geometry.c.o:
+	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/geometry.c.o
+.PHONY : geometry.c.o
+
+geometry.i: geometry.c.i
+
+.PHONY : geometry.i
+
+# target to preprocess a source file
+geometry.c.i:
+	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/geometry.c.i
+.PHONY : geometry.c.i
+
+geometry.s: geometry.c.s
+
+.PHONY : geometry.s
+
+# target to generate assembly for a file
+geometry.c.s:
+	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/geometry.c.s
+.PHONY : geometry.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -243,6 +270,9 @@ help:
 	@echo "... gameWindow.o"
 	@echo "... gameWindow.i"
 	@echo "... gameWindow.s"
+	@echo "... geometry.o"
+	@echo "... geometry.i"
+	@echo "... geometry.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

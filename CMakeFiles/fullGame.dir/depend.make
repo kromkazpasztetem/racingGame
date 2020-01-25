@@ -7,6 +7,13 @@ CMakeFiles/fullGame.dir/gameWindow.c.o: headers.h
 CMakeFiles/fullGame.dir/gameWindow.c.o: welcomeWindow.h
 CMakeFiles/fullGame.dir/gameWindow.c.o: windowManager.h
 
+CMakeFiles/fullGame.dir/geometry.c.o: gameWindow.h
+CMakeFiles/fullGame.dir/geometry.c.o: geometry.c
+CMakeFiles/fullGame.dir/geometry.c.o: geometry.h
+CMakeFiles/fullGame.dir/geometry.c.o: headers.h
+CMakeFiles/fullGame.dir/geometry.c.o: welcomeWindow.h
+CMakeFiles/fullGame.dir/geometry.c.o: windowManager.h
+
 CMakeFiles/fullGame.dir/main.c.o: gameWindow.h
 CMakeFiles/fullGame.dir/main.c.o: headers.h
 CMakeFiles/fullGame.dir/main.c.o: main.c

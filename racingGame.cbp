@@ -72,6 +72,12 @@
 		<Unit filename="/home/rozkurcz/Dokumenty/c/game1/gameWindow.h">
 			<Option target="fullGame"/>
 		</Unit>
+		<Unit filename="/home/rozkurcz/Dokumenty/c/game1/geometry.c">
+			<Option target="fullGame"/>
+		</Unit>
+		<Unit filename="/home/rozkurcz/Dokumenty/c/game1/geometry.h">
+			<Option target="fullGame"/>
+		</Unit>
 		<Unit filename="/home/rozkurcz/Dokumenty/c/game1/main.c">
 			<Option target="fullGame"/>
 		</Unit>

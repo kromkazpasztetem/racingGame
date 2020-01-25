@@ -4,7 +4,7 @@ int welcomeWindow(){
     sfVector2u welcomeWindowSize;
     welcomeWindowSize.x = 800, welcomeWindowSize.y = 600;
 
-    mWindowInfo welcomeWindowInfo = mCreateWindow(L"Wyścigi samochodowe",welcomeWindowSize,true,"background1");
+    mWindowInfo welcomeWindowInfo = mCreateWindow(L"Wyścigi samochodowe",welcomeWindowSize,sfTrue,"background1");
     sfRenderWindow* window1 = welcomeWindowInfo->window;
     sfSprite* backgroundSprite = welcomeWindowInfo->backgroundSprite;
 

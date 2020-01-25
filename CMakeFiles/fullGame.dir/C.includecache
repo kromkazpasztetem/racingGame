@@ -21,8 +21,6 @@ stdlib.h
 -
 string.h
 -
-stdbool.h
--
 SFML/Audio.h
 -
 SFML/Graphics.h
@@ -35,10 +33,6 @@ gameWindow.h
 /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
 
 /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
-headers.h
-/home/rozkurcz/Dokumenty/c/game1/headers.h
-
-/home/rozkurcz/Dokumenty/c/game1/windowManager.c
 headers.h
 /home/rozkurcz/Dokumenty/c/game1/headers.h
 

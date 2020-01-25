@@ -7,6 +7,8 @@ int gameWindow(){
     sfRenderWindow* window2 = gameWindowInfo->window;
     sfSprite* backgroundSprite = gameWindowInfo->backgroundSprite;
     windowSize = gameWindowInfo->windowSize;
+    sfRenderWindow_setKeyRepeatEnabled(window2, sfFalse);
+
 
     if (window2 == NULL)
         return 1;
@@ -58,6 +60,11 @@ int gameWindow(){
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 50);
 
+    sfBool activeCar1 = sfTrue;
+    int clicks = 0;
+    sfBool mouseHeld = sfFalse;
+
+
     // Start the game loop
     while (sfRenderWindow_isOpen(window2))
     {
@@ -77,15 +84,22 @@ int gameWindow(){
             }
         }
 
-        //Check what was clicked
-        if(sfMouse_isButtonPressed(sfMouseLeft)) {
-            if (insideSprite(mousePosF, car1pos, sizeCar)) {
-                //
-            } else if (insideSprite(mousePosF, car2pos, sizeCar)) {
 
+        // Capture only one signal
+        if(sfMouse_isButtonPressed(sfMouseLeft)) {
+            if(!mouseHeld){
+                mouseHeld = sfTrue;
+
+                // Check which car was clicked
+                if (insideSprite(mousePosF, car1pos, sizeCar) && activeCar1) {
+                    clicks++;
+                    //printf("%d \n", clicks);
+                } else if (insideSprite(mousePosF, car2pos, sizeCar) && !activeCar1) {
+
+                }
             }
         } else{
-
+            mouseHeld = sfFalse;
         }
 
         // Clear the screen
@@ -102,7 +116,7 @@ int gameWindow(){
         int onTrack;
         onTrack = binaryMap[mRound(mousePosF.x * scale)][mRound(mousePosF.y * scale)];
 
-        sprintf(string, "x:%d y:%d onTrack:%d", mousePosI.x, mousePosI.y, onTrack);
+        sprintf(string, "x:%d y:%d onTrack:%d clicks:%d", mousePosI.x, mousePosI.y, onTrack, clicks);
         sfText_setString(text, string);
         sfRenderWindow_drawText(window2, text, NULL);
 
