@@ -1,11 +1,12 @@
 #include "headers.h"
 
 int gameWindow(){
-    sfVector2u screenSize;
-    screenSize.x = 0;
-    mWindowInfo gameWindowInfo = mCreateWindow(L"Trwa wyścig - Wyścigi samochodowe", screenSize, sfTrue, "background2");
+    sfVector2u windowSize;
+    windowSize.x = 0;
+    mWindowInfo gameWindowInfo = mCreateWindow(L"Trwa wyścig - Wyścigi samochodowe", windowSize, sfTrue, "background2");
     sfRenderWindow* window2 = gameWindowInfo->window;
     sfSprite* backgroundSprite = gameWindowInfo->backgroundSprite;
+    windowSize = gameWindowInfo->windowSize;
 
     if (window2 == NULL)
         return 1;
@@ -32,7 +33,7 @@ int gameWindow(){
         //putc('\n', testFile);
     }
     fclose(binaryFile);
-    float scale = (float) (binaryMapSize.x)/(float) (screenSize.x);
+    float scale = (float) (binaryMapSize.x)/(float) (windowSize.x);
 
     sfSprite* car1 = mCreateSprite("car1", sfTrue);
     sfSprite* car2 = mCreateSprite("car2", sfTrue);
@@ -79,10 +80,12 @@ int gameWindow(){
         //Check what was clicked
         if(sfMouse_isButtonPressed(sfMouseLeft)) {
             if (insideSprite(mousePosF, car1pos, sizeCar)) {
-
+                //
             } else if (insideSprite(mousePosF, car2pos, sizeCar)) {
 
             }
+        } else{
+
         }
 
         // Clear the screen

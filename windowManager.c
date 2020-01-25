@@ -8,12 +8,13 @@ int mRound(float f){
     return val;
 }
 
-mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite){
+mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite, sfVector2u windowSize){
     mWindowInfo newInfo;
     if ( (newInfo = (mWindowInfo)malloc ( sizeof(struct managerWindowInfo) )) == NULL )
-        return false;
+        return sfFalse;
     newInfo->window = window;
     newInfo->backgroundSprite = sprite;
+    newInfo->windowSize = windowSize;
     return newInfo;
 }
 
@@ -76,5 +77,5 @@ mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBoo
     // Create background
     sprite = mCreateSprite(backgroundName, sfFalse);
 
-    return mInitInfo(window, sprite);
+    return mInitInfo(window, sprite, windowSize);
 }
