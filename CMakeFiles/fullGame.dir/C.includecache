@@ -14,10 +14,6 @@ headers.h
 headers.h
 /home/rozkurcz/Dokumenty/c/game1/headers.h
 
-/home/rozkurcz/Dokumenty/c/game1/geometry.c
-headers.h
-/home/rozkurcz/Dokumenty/c/game1/headers.h
-
 /home/rozkurcz/Dokumenty/c/game1/geometry.h
 headers.h
 /home/rozkurcz/Dokumenty/c/game1/headers.h
@@ -42,19 +38,7 @@ gameWindow.h
 geometry.h
 /home/rozkurcz/Dokumenty/c/game1/geometry.h
 
-/home/rozkurcz/Dokumenty/c/game1/main.c
-headers.h
-/home/rozkurcz/Dokumenty/c/game1/headers.h
-
-/home/rozkurcz/Dokumenty/c/game1/welcomeWindow.c
-headers.h
-/home/rozkurcz/Dokumenty/c/game1/headers.h
-
 /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
-headers.h
-/home/rozkurcz/Dokumenty/c/game1/headers.h
-
-/home/rozkurcz/Dokumenty/c/game1/windowManager.c
 headers.h
 /home/rozkurcz/Dokumenty/c/game1/headers.h
 

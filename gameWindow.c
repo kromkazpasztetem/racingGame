@@ -1,6 +1,6 @@
 #include "headers.h"
 #define MAPSIZE_X 1600
-#define MAPSIZE_Y 900
+#define MAPSIZE_Y 850
 #define RADIUS 150
 #define TEXT_MAXSIZE 100
 
@@ -23,23 +23,25 @@ int gameWindow(){
 
     // Read a track from file as a 0-1 table
     FILE* binaryFile = fopen( "binaryTrack.txt", "r");
+    FILE* testFile = fopen("binaryTest.txt", "w");
     if( binaryFile == NULL ){
         return 1;
     }
-    sfVector2i binaryMapSize;
-    binaryMapSize.x = MAPSIZE_X;
-    binaryMapSize.y = MAPSIZE_Y;
-    char binaryMap[binaryMapSize.x][binaryMapSize.y];
-    for(int y=0; y<binaryMapSize.y; y++){
-        for(int x=0; x<binaryMapSize.x; x++){
-            binaryMap[x][y] = getc(binaryFile) - '0';
+    int binaryMap[MAPSIZE_X][MAPSIZE_Y];
+    for(int y=0; y<MAPSIZE_Y; y++){
+        for(int x=0; x<MAPSIZE_X; x++){
+            binaryMap[x][y]=0;
+            if(getc(binaryFile) - '0' == 1)
+                binaryMap[x][y]=1;
+            putc(binaryMap[x][y] + '0', testFile);
         }
+        //getc(binaryFile);
         getc(binaryFile);
-        getc(binaryFile);
-        //putc('\n', testFile);
+        putc('\n', testFile);
     }
     fclose(binaryFile);
-    float scale = (float) (binaryMapSize.x)/(float) (windowSize.x);
+    fclose(testFile);
+    float scale = (float) (MAPSIZE_X)/(float) (windowSize.x);
 
     sfSprite* car1 = mCreateSprite("car1", sfTrue);
     sfSprite* car2 = mCreateSprite("car2", sfTrue);
@@ -146,7 +148,5 @@ int gameWindow(){
     sfFont_destroy(font);
     sfSprite_destroy(backgroundSprite);
     sfRenderWindow_destroy(window2);
-    free(binaryMap);
-
     return 0;
 }
