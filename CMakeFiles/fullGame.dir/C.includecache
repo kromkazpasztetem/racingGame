@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/rozkurcz/Dokumenty/c/game1/gameWindow.c
-headers.h
-/home/rozkurcz/Dokumenty/c/game1/headers.h
-
 /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
 headers.h
 /home/rozkurcz/Dokumenty/c/game1/headers.h
@@ -31,6 +27,10 @@ welcomeWindow.h
 /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
 gameWindow.h
 /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
+
+/home/rozkurcz/Dokumenty/c/game1/welcomeWindow.c
+headers.h
+/home/rozkurcz/Dokumenty/c/game1/headers.h
 
 /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
 headers.h

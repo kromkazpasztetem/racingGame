@@ -13,4 +13,4 @@ typedef struct managerWindowInfo *mWindowInfo;
 mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite, sfVector2u windowSize);
 sfBool insideSprite(sfVector2f pos, sfVector2f center, sfVector2f size);
 sfSprite* mCreateSprite(char *fileName, sfBool setCenter);
-mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBool center, char backgroundName[] );
+mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBool center, char backgroundName []);

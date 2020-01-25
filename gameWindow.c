@@ -93,7 +93,7 @@ int gameWindow(){
                 // Check which car was clicked
                 if (insideSprite(mousePosF, car1pos, sizeCar) && activeCar1) {
                     clicks++;
-                    //printf("%d \n", clicks);
+
                 } else if (insideSprite(mousePosF, car2pos, sizeCar) && !activeCar1) {
 
                 }

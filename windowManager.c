@@ -45,7 +45,7 @@ sfSprite* mCreateSprite(char *fileName, sfBool setCenter){
 
 //sfText* mCreateText(char *text)
 
-mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBool center, char backgroundName []){
+mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBool center, char backgroundName []){
     sfRenderWindow* window;
     sfSprite* sprite;
 
@@ -59,10 +59,10 @@ mWindowInfo mCreateWindow (const wchar_t titlePL[], sfVector2u windowSize, sfBoo
     sfVideoMode mode = {windowSize.x, windowSize.y, 32};
 
     // Set a title of the window in Unicode (with PL characters)
-    const sfUint32 *ptrUnicodeTitle = (const sfUint32 *) &titlePL;
+    //const sfUint32 *ptrUnicodeTitle = (const sfUint32 *) &titlePL;
 
     // Create the main window
-    window = sfRenderWindow_createUnicode(mode, ptrUnicodeTitle, sfClose, NULL);
+    window = sfRenderWindow_createUnicode(mode, titlePL, sfClose, NULL);
     if (!window)
         return NULL;
 
