@@ -32,10 +32,15 @@ sfCircleShape *mCircle(float radius, sfColor outlineColor){
     return circle;
 }
 
-sfRectangleShape* mVectorTriangle(sfVector2f pos){
-    sfRectangleShape* triangle = sfRectangleShape_create();
-    //sfRectangleShape()
-
+sfCircleShape * mVectorTriangle(float radius, sfColor fillColor){
+    sfCircleShape* triangle = sfCircleShape_create();
+    sfCircleShape_setPointCount(triangle, 3);
+    sfCircleShape_setRadius(triangle, radius);
+    sfVector2f origin;
+    origin.x = radius;
+    origin.y = radius;
+    sfCircleShape_setOrigin(triangle, origin);
+    sfCircleShape_setFillColor(triangle, fillColor);
     return triangle;
 }
 

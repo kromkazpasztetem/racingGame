@@ -1,7 +1,8 @@
 #include "headers.h"
 #define MAPSIZE_X 1600
 #define MAPSIZE_Y 850
-#define RADIUS 150
+#define CIRCLE_R 150
+#define VECTOR_R 10
 #define TEXT_MAXSIZE 100
 
 int gameWindow(){
@@ -52,13 +53,14 @@ int gameWindow(){
     car2pos.x = 850;
     car2pos.y = 800;
 
-    sfCircleShape* circle1 = mCircle(RADIUS, sfCyan);
-    sfCircleShape* circle2 = mCircle(RADIUS, sfYellow);
+    sfCircleShape* circle1 = mCircle(CIRCLE_R, sfCyan);
+    sfCircleShape* circle2 = mCircle(CIRCLE_R, sfYellow);
 
     sfVector2f vector2pos;
     vector2pos.x = 100;
     vector2pos.y = 820;
     sfRectangleShape* vector2 = mVectorLine(car2pos, vector2pos, sfMagenta);
+    sfCircleShape* vector2head = mVectorTriangle(VECTOR_R, sfMagenta);
 
     // Draw the text
     font = sfFont_createFromFile("./fonts/font1.otf");
@@ -107,7 +109,7 @@ int gameWindow(){
                 } else if (insideSprite(mousePosF, car2pos, sizeCar) && !activeCar1 && !clickedCar) {
 
                 }
-                if (mInsideCircle(car1pos, RADIUS, mousePosF))
+                if (mInsideCircle(car1pos, CIRCLE_R, mousePosF))
                     clicks++;
             }
         } else{
@@ -116,6 +118,11 @@ int gameWindow(){
 
         // Clear the screen
         sfRenderWindow_clear(window2, sfBlack);
+
+        // count rotation and vectors
+        float rotation2 = sfRectangleShape_getRotation(vector2);
+        sfSprite_setRotation(car2, rotation2);
+        sfCircleShape_setRotation(vector2head, rotation2 + 30);
 
         // Draw the sprite
         sfRenderWindow_drawSprite(window2, backgroundSprite, NULL);
@@ -130,6 +137,8 @@ int gameWindow(){
         sfRenderWindow_drawCircleShape(window2, circle1, NULL);
         sfRenderWindow_drawCircleShape(window2, circle2, NULL);
         sfRenderWindow_drawRectangleShape(window2, vector2, NULL);
+        sfCircleShape_setPosition(vector2head, vector2pos);
+        sfRenderWindow_drawCircleShape(window2, vector2head, NULL);
 
         // Print a coordinates of the mouse (temp)
         int onTrack;
