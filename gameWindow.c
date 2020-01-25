@@ -1,4 +1,8 @@
 #include "headers.h"
+#define MAPSIZE_X 1600
+#define MAPSIZE_Y 900
+#define RADIUS 150
+#define TEXT_MAXSIZE 100
 
 int gameWindow(){
     sfVector2u windowSize;
@@ -23,8 +27,8 @@ int gameWindow(){
         return 1;
     }
     sfVector2i binaryMapSize;
-    binaryMapSize.x = 1600;
-    binaryMapSize.y = 850;
+    binaryMapSize.x = MAPSIZE_X;
+    binaryMapSize.y = MAPSIZE_Y;
     char binaryMap[binaryMapSize.x][binaryMapSize.y];
     for(int y=0; y<binaryMapSize.y; y++){
         for(int x=0; x<binaryMapSize.x; x++){
@@ -45,20 +49,25 @@ int gameWindow(){
     sizeCar.y = sizeCarTemp.height;
 
     sfVector2f car1pos;
-    car1pos.x = 800;
-    car1pos.y = 700;
+    car1pos.x = 850;
+    car1pos.y = 758;
     sfVector2f car2pos;
-    car2pos.x = 800;
+    car2pos.x = 850;
     car2pos.y = 800;
+    sfSprite_setRotation(car1, 270);
+    sfSprite_setRotation(car2, 270);
+
+    sfCircleShape* circle1 = mCircle(RADIUS, sfCyan);
+    sfCircleShape* circle2 = mCircle(RADIUS, sfYellow);
 
     // Draw the text
     font = sfFont_createFromFile("./fonts/font1.otf");
     if (!font)
         return 1;
     text = sfText_create();
-    char string[50];
+    char string[TEXT_MAXSIZE];
     sfText_setFont(text, font);
-    sfText_setCharacterSize(text, 50);
+    sfText_setCharacterSize(text, TEXT_MAXSIZE);
 
     sfBool activeCar1 = sfTrue;
     int clicks = 0;
@@ -92,11 +101,13 @@ int gameWindow(){
 
                 // Check which car was clicked
                 if (insideSprite(mousePosF, car1pos, sizeCar) && activeCar1) {
-                    clicks++;
+                    //clicks++;
 
                 } else if (insideSprite(mousePosF, car2pos, sizeCar) && !activeCar1) {
 
                 }
+                if (mInsideCircle(car1pos, RADIUS, mousePosF))
+                    clicks++;
             }
         } else{
             mouseHeld = sfFalse;
@@ -107,10 +118,14 @@ int gameWindow(){
 
         // Draw the sprite
         sfRenderWindow_drawSprite(window2, backgroundSprite, NULL);
-        sfSprite_setPosition(car1,car1pos);
+        sfSprite_setPosition(car1, car1pos);
         sfSprite_setPosition(car2, car2pos);
         sfRenderWindow_drawSprite(window2, car1, NULL);
         sfRenderWindow_drawSprite(window2, car2, NULL);
+        sfCircleShape_setPosition(circle1, car1pos);
+        sfCircleShape_setPosition(circle2, car2pos);
+        sfRenderWindow_drawCircleShape(window2, circle1, NULL);
+        sfRenderWindow_drawCircleShape(window2, circle2, NULL);
 
         // Print a coordinates of the mouse (temp)
         int onTrack;

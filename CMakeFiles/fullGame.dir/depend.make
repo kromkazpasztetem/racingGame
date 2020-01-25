@@ -3,29 +3,34 @@
 
 CMakeFiles/fullGame.dir/gameWindow.c.o: gameWindow.c
 CMakeFiles/fullGame.dir/gameWindow.c.o: gameWindow.h
+CMakeFiles/fullGame.dir/gameWindow.c.o: geometry.h
 CMakeFiles/fullGame.dir/gameWindow.c.o: headers.h
 CMakeFiles/fullGame.dir/gameWindow.c.o: welcomeWindow.h
 CMakeFiles/fullGame.dir/gameWindow.c.o: windowManager.h
 
 CMakeFiles/fullGame.dir/geometry.c.o: gameWindow.h
 CMakeFiles/fullGame.dir/geometry.c.o: geometry.c
+CMakeFiles/fullGame.dir/geometry.c.o: geometry.h
 CMakeFiles/fullGame.dir/geometry.c.o: headers.h
 CMakeFiles/fullGame.dir/geometry.c.o: welcomeWindow.h
 CMakeFiles/fullGame.dir/geometry.c.o: windowManager.h
 
 CMakeFiles/fullGame.dir/main.c.o: gameWindow.h
+CMakeFiles/fullGame.dir/main.c.o: geometry.h
 CMakeFiles/fullGame.dir/main.c.o: headers.h
 CMakeFiles/fullGame.dir/main.c.o: main.c
 CMakeFiles/fullGame.dir/main.c.o: welcomeWindow.h
 CMakeFiles/fullGame.dir/main.c.o: windowManager.h
 
 CMakeFiles/fullGame.dir/welcomeWindow.c.o: gameWindow.h
+CMakeFiles/fullGame.dir/welcomeWindow.c.o: geometry.h
 CMakeFiles/fullGame.dir/welcomeWindow.c.o: headers.h
 CMakeFiles/fullGame.dir/welcomeWindow.c.o: welcomeWindow.c
 CMakeFiles/fullGame.dir/welcomeWindow.c.o: welcomeWindow.h
 CMakeFiles/fullGame.dir/welcomeWindow.c.o: windowManager.h
 
 CMakeFiles/fullGame.dir/windowManager.c.o: gameWindow.h
+CMakeFiles/fullGame.dir/windowManager.c.o: geometry.h
 CMakeFiles/fullGame.dir/windowManager.c.o: headers.h
 CMakeFiles/fullGame.dir/windowManager.c.o: welcomeWindow.h
 CMakeFiles/fullGame.dir/windowManager.c.o: windowManager.c

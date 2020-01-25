@@ -20,9 +20,7 @@ int welcomeWindow(){
     if (!font)
         return 1;
     text = sfText_create();
-    const wchar_t stringPL[] = L"Kliknij, aby rozpocząć wyścig!";
-    const sfUint32 *ptrUnicodeString = (const sfUint32 *) &stringPL;
-    sfText_setUnicodeString(text, ptrUnicodeString);
+    sfText_setUnicodeString(text, L"Kliknij, aby rozpocząć wyścig!");
     sfText_setFont(text, font);
     sfText_setCharacterSize(text, 50);
 

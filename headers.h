@@ -8,3 +8,4 @@
 #include "windowManager.h"
 #include "welcomeWindow.h"
 #include "gameWindow.h"
+#include "geometry.h"
