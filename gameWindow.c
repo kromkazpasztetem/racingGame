@@ -2,8 +2,50 @@
 #define MAPSIZE_X 1600
 #define MAPSIZE_Y 850
 #define CIRCLE_R 150
-#define VECTOR_R 10
+#define DART_R 10
 #define TEXT_MAXSIZE 100
+
+struct car initCar(int carID, sfColor color){
+    struct car newCar;
+    char carName [50];
+    sprintf(carName,"car%d", carID);
+    newCar.image = mCreateSprite(carName, sfTrue);
+    newCar.vectorColor = color;
+    newCar.circle = mCircle(CIRCLE_R, newCar.vectorColor);
+    newCar.vectorSpike = mVectorSpike(DART_R, newCar.vectorColor);
+    return newCar;
+}
+
+void mChangeVector(ptrCar carPtr, sfVector2f mousePos){
+    carPtr->endPos.x += mousePos.x;
+    carPtr->endPos.y += mousePos.y;
+    carPtr->endPos.x += carPtr->endPos.x - carPtr->beginPos.x;
+    carPtr->endPos.y += carPtr->endPos.y - carPtr->beginPos.y;
+    carPtr->beginPos.x += (carPtr->endPos.x - carPtr->beginPos.x)/2;
+    carPtr->beginPos.y += (carPtr->endPos.y - carPtr->beginPos.y)/2;
+}
+
+void mRotate(ptrCar carPtr){
+    carPtr->vectorLine = mVectorLine(carPtr->beginPos, carPtr->endPos, carPtr->vectorColor);
+    float angle = sfRectangleShape_getRotation(carPtr->vectorLine);
+    sfSprite_setRotation(carPtr->image, angle);
+    sfCircleShape_setRotation(carPtr->vectorSpike, angle + 30);
+}
+
+void mPosition(ptrCar carPtr){
+    sfSprite_setPosition(carPtr->image, carPtr->beginPos);
+    sfRectangleShape_setPosition(carPtr->vectorLine, carPtr->beginPos);
+    sfCircleShape_setPosition(carPtr->vectorSpike, carPtr->endPos);
+    sfCircleShape_setPosition(carPtr->circle, carPtr->beginPos);
+}
+
+void mDraw(ptrCar carPtr, sfRenderWindow* gameWindow){
+    sfRenderWindow_drawSprite(gameWindow, carPtr->image, NULL);
+    if(carPtr->beginPos.x != carPtr->endPos.x || carPtr->beginPos.y != carPtr->endPos.y){
+        sfRenderWindow_drawRectangleShape(gameWindow, carPtr->vectorLine, NULL);
+        sfRenderWindow_drawCircleShape(gameWindow, carPtr->vectorSpike, NULL);
+    }
+}
 
 int gameWindow(){
 
@@ -11,10 +53,7 @@ int gameWindow(){
     sfVector2u windowSize;
     windowSize.x = 0;
     mWindowInfo gameWindowInfo = mCreateWindow(L"Trwa wyścig - Wyścigi samochodowe", windowSize, sfTrue, "background2");
-    sfRenderWindow* window2 = gameWindowInfo->window;
-    sfSprite* backgroundSprite = gameWindowInfo->backgroundSprite;
-    windowSize = gameWindowInfo->windowSize;
-    if (window2 == NULL)
+    if (gameWindowInfo->window == NULL)
         return 1;
     sfFont* font;
     sfText* text;
@@ -38,29 +77,22 @@ int gameWindow(){
     fclose(binaryFile);
     float scale = (float) (MAPSIZE_X)/(float) (windowSize.x);
 
-    // Create cars and set default position
-    sfSprite* car1 = mCreateSprite("car1", sfTrue);
-    sfSprite* car2 = mCreateSprite("car2", sfTrue);
-    sfFloatRect sizeCarTemp = sfSprite_getLocalBounds(car1);
+    struct car car1 = initCar(1, sfBlue);
+    struct car car2 = initCar(2, sfYellow);
+
+    // Create cars
+    sfFloatRect sizeCarTemp = sfSprite_getLocalBounds(car1.image);
     sfVector2f sizeCar;
     sizeCar.x = sizeCarTemp.width;
     sizeCar.y = sizeCarTemp.height;
 
-    sfVector2f car1pos;
-    car1pos.x = 850;
-    car1pos.y = 758;
-    sfVector2f car2pos;
-    car2pos.x = 850;
-    car2pos.y = 800;
-
-    sfCircleShape* circle1 = mCircle(CIRCLE_R, sfCyan);
-    sfCircleShape* circle2 = mCircle(CIRCLE_R, sfYellow);
-
-    sfVector2f vector2pos;
-    vector2pos.x = 100;
-    vector2pos.y = 820;
-    sfRectangleShape* vector2 = mVectorLine(car2pos, vector2pos, sfMagenta);
-    sfCircleShape* vector2head = mVectorTriangle(VECTOR_R, sfMagenta);
+    //  Set default position
+    car1.beginPos.x = 850;
+    car1.beginPos.y= 758;
+    car1.endPos = car1.beginPos;
+    car2.beginPos.x = 850;
+    car2.beginPos.y = 800;
+    car2.endPos = car2.beginPos;
 
     // Draw the text
     font = sfFont_createFromFile("./fonts/font1.otf");
@@ -80,20 +112,20 @@ int gameWindow(){
     int clicks = 0;
 
     // Start the game loop
-    while (sfRenderWindow_isOpen(window2))
+    while (sfRenderWindow_isOpen(gameWindowInfo->window))
     {
         // Save a mouse position
-        sfVector2i mousePosI = sfMouse_getPosition((const sfWindow *) window2);
+        sfVector2i mousePosI = sfMouse_getPosition((const sfWindow *) gameWindowInfo->window);
         sfVector2f mousePosF;
         mousePosF.x = (float) mousePosI.x;
         mousePosF.y = (float) mousePosI.y;
 
         // Process events
-        while (sfRenderWindow_pollEvent(window2, &event))
+        while (sfRenderWindow_pollEvent(gameWindowInfo->window, &event))
         {
             // Close window : exit
             if (event.type == sfEvtClosed){
-                sfRenderWindow_close(window2);
+                sfRenderWindow_close(gameWindowInfo->window);
                 return 0;
             }
         }
@@ -104,58 +136,67 @@ int gameWindow(){
                 mouseHeld = sfTrue;
 
                 // Check which car was clicked
-                if (insideSprite(mousePosF, car1pos, sizeCar) && activeCar1 && !clickedCar) {
-                    //clicks++;
-                } else if (insideSprite(mousePosF, car2pos, sizeCar) && !activeCar1 && !clickedCar) {
-
+                if (insideSprite(mousePosF, car1.beginPos, sizeCar) && activeCar1 && !clickedCar) {
+                    clickedCar = sfTrue;
+                } else if (insideSprite(mousePosF, car2.beginPos, sizeCar) && !activeCar1 && !clickedCar) {
+                    clickedCar = sfTrue;
                 }
-                if (mInsideCircle(car1pos, CIRCLE_R, mousePosF))
-                    clicks++;
+
+                // Check which circle was clicked
+                if (mInsideCircle(car1.beginPos, CIRCLE_R, mousePosF) && activeCar1 && clickedCar){
+                    clickedCar = sfFalse;
+                    activeCar1 = sfFalse;
+                    mChangeVector(&car1, mousePosF);
+                }
+                if (mInsideCircle(car2.beginPos, CIRCLE_R, mousePosF) && !activeCar1 && clickedCar){
+                    clickedCar = sfFalse;
+                    activeCar1 = sfTrue;
+                    mChangeVector(&car2, mousePosF);
+                }
             }
         } else{
             mouseHeld = sfFalse;
         }
 
+        // Count rotation and vectors
+        mRotate(&car1);
+        mRotate(&car2);
+
+        // Update position
+        mPosition(&car1);
+        mPosition(&car2);
+
         // Clear the screen
-        sfRenderWindow_clear(window2, sfBlack);
+        sfRenderWindow_clear(gameWindowInfo->window, sfBlack);
 
-        // count rotation and vectors
-        float rotation2 = sfRectangleShape_getRotation(vector2);
-        sfSprite_setRotation(car2, rotation2);
-        sfCircleShape_setRotation(vector2head, rotation2 + 30);
+        // Draw background, cars, vectors
+        sfRenderWindow_drawSprite(gameWindowInfo->window, gameWindowInfo->backgroundSprite, NULL);
+        mDraw(&car1, gameWindowInfo->window);
+        mDraw(&car2, gameWindowInfo->window);
 
-        // Draw the sprite
-        sfRenderWindow_drawSprite(window2, backgroundSprite, NULL);
-        sfSprite_setPosition(car1, car1pos);
-        sfSprite_setPosition(car2, car2pos);
-        sfRenderWindow_drawSprite(window2, car1, NULL);
-        sfRenderWindow_drawSprite(window2, car2, NULL);
-
-
-        sfCircleShape_setPosition(circle1, car1pos);
-        sfCircleShape_setPosition(circle2, car2pos);
-        sfRenderWindow_drawCircleShape(window2, circle1, NULL);
-        sfRenderWindow_drawCircleShape(window2, circle2, NULL);
-        sfRenderWindow_drawRectangleShape(window2, vector2, NULL);
-        sfCircleShape_setPosition(vector2head, vector2pos);
-        sfRenderWindow_drawCircleShape(window2, vector2head, NULL);
+        // Draw circle when car was clicked
+        if(clickedCar){
+            if(activeCar1)
+                sfRenderWindow_drawCircleShape(gameWindowInfo->window, car1.circle, NULL);
+            else
+                sfRenderWindow_drawCircleShape(gameWindowInfo->window, car2.circle, NULL);
+        }
 
         // Print a coordinates of the mouse (temp)
-        int onTrack;
-        onTrack = binaryMap[fRound(mousePosF.x * scale)][fRound(mousePosF.y * scale)];
+        int onTrack = binaryMap[fRound(mousePosF.x * scale)][fRound(mousePosF.y * scale)];
         sprintf(string, "x:%d y:%d onTrack:%d clicks:%d", mousePosI.x, mousePosI.y, onTrack, clicks);
         sfText_setString(text, string);
-        sfRenderWindow_drawText(window2, text, NULL);
+        sfRenderWindow_drawText(gameWindowInfo->window, text, NULL);
 
         // Update the window
-        sfRenderWindow_display(window2);
+        sfRenderWindow_display(gameWindowInfo->window);
     }
 
     // Cleanup resources
     //sfMusic_destroy(music);
     sfText_destroy(text);
     sfFont_destroy(font);
-    sfSprite_destroy(backgroundSprite);
-    sfRenderWindow_destroy(window2);
+    sfSprite_destroy(gameWindowInfo->backgroundSprite);
+    sfRenderWindow_destroy(gameWindowInfo->window);
     return 0;
 }

@@ -32,7 +32,7 @@ sfCircleShape *mCircle(float radius, sfColor outlineColor){
     return circle;
 }
 
-sfCircleShape * mVectorTriangle(float radius, sfColor fillColor){
+sfCircleShape * mVectorSpike(float radius, sfColor fillColor){
     sfCircleShape* triangle = sfCircleShape_create();
     sfCircleShape_setPointCount(triangle, 3);
     sfCircleShape_setRadius(triangle, radius);
@@ -57,7 +57,7 @@ sfRectangleShape* mVectorLine(sfVector2f fromPos, sfVector2f toPos, sfColor colo
     size.y /=2;
     sfRectangleShape_setOrigin(line, size);
     sfRectangleShape_setPosition(line, fromPos);
-    // Rotate line (arctan(y/x)=degree in radians)
+    // Rotate line (arctan(y/x)=angle in radians)
     float deg;
     if(fromPos.x == toPos.x){
         if(fromPos.x > toPos.x)
@@ -69,7 +69,7 @@ sfRectangleShape* mVectorLine(sfVector2f fromPos, sfVector2f toPos, sfColor colo
         // Convert radians to degrees
         deg = deg *180/M_PI;
     }
-    sfRectangleShape_rotate(line,deg);
+    sfRectangleShape_rotate(line, deg);
     sfRectangleShape_setFillColor(line, color);
 
     return line;
