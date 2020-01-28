@@ -85,6 +85,18 @@ sfRectangleShape* mVectorLine(sfVector2f fromPos, sfVector2f toPos, sfColor colo
     return line;
 }
 
+
+// Check if point is inside the sprite
+
+sfBool mInsideSprite(sfVector2f pos, sfVector2f center, sfVector2f size){
+    if(pos.x > center.x - size.x/2 && pos.x < center.x + size.x/2
+       && pos.y > center.y - size.y/2 && pos.y < center.y + size.y/2)
+        return sfTrue;
+    return sfFalse;
+}
+
+// Check if point is inside the circle
+
 sfBool mInsideCircle(sfVector2f origin, float radius, sfVector2f point){
 
     // |x1-x2|^2 + |y1-y2|^2 <= r^2, circle definition

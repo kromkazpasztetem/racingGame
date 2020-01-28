@@ -197,9 +197,9 @@ int gameWindow(){
                     if(!clickedCar){
 
                         // Check which car was clicked
-                        if (insideSprite(mousePosF, car1.beginPos, sizeCar) && activeCar1) {
+                        if (mInsideSprite(mousePosF, car1.beginPos, sizeCar) && activeCar1) {
                             clickedCar = sfTrue;
-                        } else if (insideSprite(mousePosF, car2.beginPos, sizeCar) && !activeCar1) {
+                        } else if (mInsideSprite(mousePosF, car2.beginPos, sizeCar) && !activeCar1) {
                             clickedCar = sfTrue;
                         }
                     }else{
