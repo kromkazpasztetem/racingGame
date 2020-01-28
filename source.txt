@@ -1,0 +1,11 @@
+Images:
+	cars:
+		https://www.freepik.com/free-photos-vectors/car - Car vector created by macrovector
+	track:
+		https://commons.wikimedia.org/wiki/File:Circuit_Hokenheimring.svg
+		https://www.dcode.fr/binary-image
+Music:
+	welcomeWindow:
+		https://file-examples.com/index.php/sample-audio-files/sample-ogg-download/
+	gameWindow:
+		http://www.brainybetty.com/soundsforpowerpoint2.htm

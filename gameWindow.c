@@ -1,15 +1,16 @@
 #include "headers.h"
+
 #define MAPSIZE_X 1600
 #define MAPSIZE_Y 850
 #define CIRCLE_R 100
 #define SPIKE_R 10
-#define TEXT_MAXSIZE 100
 #define ON_TRACK_NERF 2
-#define OFF_TRACK_NERF 16
+#define OFF_TRACK_NERF 64
+
+
+// Create car and initialise default parameters
 
 struct car initCar(int carID, sfColor color){
-
-    // Set default values, allocate space
     struct car newCar;
     char carName [50];
     sprintf(carName,"car%d", carID);
@@ -136,9 +137,8 @@ int gameWindow(){
     mWindowInfo gameWindowInfo = mCreateWindow(L"Trwa wyścig - Wyścigi samochodowe", windowSize, sfTrue, "background2");
     if (gameWindowInfo->window == NULL)
         return 1;
-    sfFont* font;
-    sfText* text;
-    //sfMusic* music;
+    //sfFont* font;
+    sfMusic* music;
     sfEvent event;
     sfBool** onTrack = readTrack();
 
@@ -159,19 +159,19 @@ int gameWindow(){
     car2.beginPos.y = 800;
     car2.endPos = car2.beginPos;
 
-    // Draw the text
-    font = sfFont_createFromFile("./fonts/font1.otf");
-    if (!font)
+    // Load a music to play
+    music = sfMusic_createFromFile("./music/game_music.wav");
+    if (!music)
         return 1;
-    text = sfText_create();
-    char string[TEXT_MAXSIZE];
-    sfText_setFont(text, font);
-    sfText_setCharacterSize(text, 60);
+    sfMusic_setLoop(music, sfTrue);
+
+    // Play the music
+    sfMusic_play(music);
 
     // Set booleans to control mouse button
     sfBool activeCar1 = sfTrue;
     sfBool mouseHeld = sfFalse;
-    sfBool clickedCar = sfFalse;
+    sfBool clickedCar = sfTrue;
 
     // Start the game loop
     while (sfRenderWindow_isOpen(gameWindowInfo->window))
@@ -246,24 +246,16 @@ int gameWindow(){
             else
                 sfRenderWindow_drawCircleShape(gameWindowInfo->window, car2.circle, NULL);
         }
-        /*
-        // Print a coordinates of the mouse (temp)
-        int onTrack = binaryMap[fRound(mousePosF.x * scale)][fRound(mousePosF.y * scale)];
-        sprintf(string, "x:%d y:%d onTrack:%d clicks:%d", mousePosI.x, mousePosI.y, onTrack, clicks);
-        sfText_setString(text, string);
-        sfRenderWindow_drawText(gameWindowInfo->window, text, NULL);
-        */
 
         // Update the window
         sfRenderWindow_display(gameWindowInfo->window);
     }
 
     // Cleanup resources
-    //sfMusic_destroy(music);
-    sfText_destroy(text);
-    sfFont_destroy(font);
+    sfMusic_destroy(music);
     sfSprite_destroy(gameWindowInfo->backgroundSprite);
     sfRenderWindow_destroy(gameWindowInfo->window);
     free(gameWindowInfo);
+    free(onTrack);
     return 0;
 }

@@ -1,5 +1,7 @@
 #include "headers.h"
 
+// Initialise struct with window parameters
+
 mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite, sfVector2u windowSize){
     mWindowInfo newInfo;
     if ( (newInfo = (mWindowInfo)malloc ( sizeof(struct managerWindowInfo) )) == NULL )
@@ -10,12 +12,16 @@ mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite, sfVector2u windo
     return newInfo;
 }
 
+// Check if point is inside the sprite
+
 sfBool insideSprite(sfVector2f pos, sfVector2f center, sfVector2f size){
     if(pos.x > center.x - size.x/2 && pos.x < center.x + size.x/2
        && pos.y > center.y - size.y/2 && pos.y < center.y + size.y/2)
         return sfTrue;
     return sfFalse;
 }
+
+// Create the sprite from image
 
 sfSprite* mCreateSprite(char *fileName, sfBool setCenter){
     char spriteName [50];
@@ -35,7 +41,7 @@ sfSprite* mCreateSprite(char *fileName, sfBool setCenter){
     return sprite;
 }
 
-//sfText* mCreateText(char *text)
+// Create the window
 
 mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBool center, char backgroundName []){
     sfRenderWindow* window;
