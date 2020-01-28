@@ -1,47 +1,128 @@
 #include "headers.h"
 #define MAPSIZE_X 1600
 #define MAPSIZE_Y 850
-#define CIRCLE_R 150
-#define DART_R 10
+#define CIRCLE_R 100
+#define SPIKE_R 10
 #define TEXT_MAXSIZE 100
+#define ON_TRACK_NERF 2
+#define OFF_TRACK_NERF 16
 
 struct car initCar(int carID, sfColor color){
+
+    // Set default values, allocate space
     struct car newCar;
     char carName [50];
     sprintf(carName,"car%d", carID);
     newCar.image = mCreateSprite(carName, sfTrue);
     newCar.vectorColor = color;
     newCar.circle = mCircle(CIRCLE_R, newCar.vectorColor);
-    newCar.vectorSpike = mVectorSpike(DART_R, newCar.vectorColor);
+    newCar.vectorSpike = mVectorSpike(SPIKE_R, newCar.vectorColor);
     return newCar;
 }
 
-void mChangeVector(ptrCar carPtr, sfVector2f mousePos){
-    carPtr->endPos.x += mousePos.x;
-    carPtr->endPos.y += mousePos.y;
-    carPtr->endPos.x += carPtr->endPos.x - carPtr->beginPos.x;
-    carPtr->endPos.y += carPtr->endPos.y - carPtr->beginPos.y;
-    carPtr->beginPos.x += (carPtr->endPos.x - carPtr->beginPos.x)/2;
-    carPtr->beginPos.y += (carPtr->endPos.y - carPtr->beginPos.y)/2;
+sfBool** readTrack(){
+
+    // Allocate space
+    sfBool **binaryMap;
+    if (( binaryMap =(sfBool**) malloc( MAPSIZE_X * sizeof( sfBool* ))) == NULL )
+        return NULL;
+    for(int x=0; x<MAPSIZE_X; x++) {
+        if ((binaryMap[x] = (sfBool *) malloc(MAPSIZE_Y * sizeof(sfBool))) == NULL)
+            return NULL;
+    }
+
+    // Read a racing track from file as a 0-1 table
+    FILE* binaryFile = fopen( "binaryTrack.txt", "r");
+    if( binaryFile == NULL ){
+        return NULL;
+    }
+    for(int y=0; y<MAPSIZE_Y; y++){
+        for(int x=0; x<MAPSIZE_X; x++){
+            binaryMap[x][y]=sfTrue;
+            if(getc(binaryFile) == '1')
+                binaryMap[x][y]=sfFalse;
+        }
+        getc(binaryFile);
+    }
+    fclose(binaryFile);
+
+    return binaryMap;
+}
+
+void mChangeVector(ptrCar carPtr, sfVector2f mousePos, sfBool** onTrack, sfVector2u windowSize){
+    // Count new vector
+    sfVector2f newVector;
+    newVector.x = (carPtr->endPos.x - carPtr->beginPos.x) + (mousePos.x - carPtr->beginPos.x);
+    newVector.y = (carPtr->endPos.y - carPtr->beginPos.y) + (mousePos.y - carPtr->beginPos.y);
+
+    // Divide the vector by integer (just to balance purposes)
+    newVector.x/=ON_TRACK_NERF;
+    newVector.y/=ON_TRACK_NERF;
+
+    // Count scale of the binary track map
+    float scale = (float) (MAPSIZE_X)/(float) (windowSize.x);
+
+    // Count new position of the car and check if it still on the screen
+    carPtr->beginPos.x = carPtr->endPos.x + newVector.x;
+    if( carPtr->beginPos.x > MAPSIZE_X*scale )
+        carPtr->beginPos.x = MAPSIZE_X;
+    else if( carPtr->beginPos.x < 0 )
+        carPtr->beginPos.x = 0;
+    carPtr->beginPos.y = carPtr->endPos.y + newVector.y;
+    if( carPtr->beginPos.y > MAPSIZE_Y*scale )
+        carPtr->beginPos.y = MAPSIZE_Y;
+    else if ( carPtr->beginPos.y <0 )
+        carPtr->beginPos.y = 0;
+
+    // Check if the car is on the track
+    if(!onTrack[ fRound(carPtr->beginPos.x * scale) ][ fRound(carPtr->beginPos.y * scale) ]){
+
+        // Divide vector by larger integer in case of driving off-track
+        newVector.x/=OFF_TRACK_NERF;
+        newVector.y/=OFF_TRACK_NERF;
+    }
+
+    // Count new position of the vector
+    carPtr->endPos = carPtr->beginPos;
+    carPtr->endPos.x += newVector.x;
+    carPtr->endPos.y += newVector.y;
 }
 
 void mRotate(ptrCar carPtr){
+
+    // Create a line of the vector
     carPtr->vectorLine = mVectorLine(carPtr->beginPos, carPtr->endPos, carPtr->vectorColor);
-    float angle = sfRectangleShape_getRotation(carPtr->vectorLine);
+    float angle = 0;
+
+    // Do not rotate if vector is null
+    if(carPtr->vectorLine != NULL)
+        angle = sfRectangleShape_getRotation(carPtr->vectorLine);
+
+    // Rotate by angle of the vector line
     sfSprite_setRotation(carPtr->image, angle);
     sfCircleShape_setRotation(carPtr->vectorSpike, angle + 30);
 }
 
 void mPosition(ptrCar carPtr){
+
+    // Set new position of the car and circle
     sfSprite_setPosition(carPtr->image, carPtr->beginPos);
-    sfRectangleShape_setPosition(carPtr->vectorLine, carPtr->beginPos);
-    sfCircleShape_setPosition(carPtr->vectorSpike, carPtr->endPos);
     sfCircleShape_setPosition(carPtr->circle, carPtr->beginPos);
+
+    // Set new position of the vector if not null
+    if(carPtr->vectorLine != NULL){
+        sfRectangleShape_setPosition(carPtr->vectorLine, carPtr->beginPos);
+        sfCircleShape_setPosition(carPtr->vectorSpike, carPtr->endPos);
+    }
 }
 
 void mDraw(ptrCar carPtr, sfRenderWindow* gameWindow){
+
+    // Draw the car
     sfRenderWindow_drawSprite(gameWindow, carPtr->image, NULL);
-    if(carPtr->beginPos.x != carPtr->endPos.x || carPtr->beginPos.y != carPtr->endPos.y){
+
+    // Draw the vector if not null
+    if(carPtr->vectorLine != NULL){
         sfRenderWindow_drawRectangleShape(gameWindow, carPtr->vectorLine, NULL);
         sfRenderWindow_drawCircleShape(gameWindow, carPtr->vectorSpike, NULL);
     }
@@ -59,23 +140,7 @@ int gameWindow(){
     sfText* text;
     //sfMusic* music;
     sfEvent event;
-
-    // Read a racing track from file as a 0-1 table
-    FILE* binaryFile = fopen( "binaryTrack.txt", "r");
-    if( binaryFile == NULL ){
-        return 1;
-    }
-    int binaryMap[MAPSIZE_X][MAPSIZE_Y];
-    for(int y=0; y<MAPSIZE_Y; y++){
-        for(int x=0; x<MAPSIZE_X; x++){
-            binaryMap[x][y]=0;
-            if(getc(binaryFile) - '0' == 1)
-                binaryMap[x][y]=1;
-        }
-        getc(binaryFile);
-    }
-    fclose(binaryFile);
-    float scale = (float) (MAPSIZE_X)/(float) (windowSize.x);
+    sfBool** onTrack = readTrack();
 
     struct car car1 = initCar(1, sfBlue);
     struct car car2 = initCar(2, sfYellow);
@@ -86,7 +151,7 @@ int gameWindow(){
     sizeCar.x = sizeCarTemp.width;
     sizeCar.y = sizeCarTemp.height;
 
-    //  Set default position
+    // Set default position
     car1.beginPos.x = 850;
     car1.beginPos.y= 758;
     car1.endPos = car1.beginPos;
@@ -108,9 +173,6 @@ int gameWindow(){
     sfBool mouseHeld = sfFalse;
     sfBool clickedCar = sfFalse;
 
-    //temp
-    int clicks = 0;
-
     // Start the game loop
     while (sfRenderWindow_isOpen(gameWindowInfo->window))
     {
@@ -128,34 +190,37 @@ int gameWindow(){
                 sfRenderWindow_close(gameWindowInfo->window);
                 return 0;
             }
-        }
+            if (event.type == sfEvtMouseButtonPressed){
+                if(!mouseHeld){
+                    // Capture only one signal
+                    mouseHeld = sfTrue;
+                    if(!clickedCar){
 
-        // Capture only one signal
-        if(sfMouse_isButtonPressed(sfMouseLeft)) {
-            if(!mouseHeld){
-                mouseHeld = sfTrue;
+                        // Check which car was clicked
+                        if (insideSprite(mousePosF, car1.beginPos, sizeCar) && activeCar1) {
+                            clickedCar = sfTrue;
+                        } else if (insideSprite(mousePosF, car2.beginPos, sizeCar) && !activeCar1) {
+                            clickedCar = sfTrue;
+                        }
+                    }else{
 
-                // Check which car was clicked
-                if (insideSprite(mousePosF, car1.beginPos, sizeCar) && activeCar1 && !clickedCar) {
-                    clickedCar = sfTrue;
-                } else if (insideSprite(mousePosF, car2.beginPos, sizeCar) && !activeCar1 && !clickedCar) {
-                    clickedCar = sfTrue;
+                        // Check which circle was clicked
+                        if (mInsideCircle(car1.beginPos, CIRCLE_R, mousePosF) && activeCar1 && clickedCar){
+                            clickedCar = sfFalse;
+                            activeCar1 = sfFalse;
+                            mChangeVector(&car1, mousePosF, onTrack, gameWindowInfo->windowSize);
+                        }
+                        if (mInsideCircle(car2.beginPos, CIRCLE_R, mousePosF) && !activeCar1 && clickedCar){
+                            clickedCar = sfFalse;
+                            activeCar1 = sfTrue;
+                            mChangeVector(&car2, mousePosF, onTrack, gameWindowInfo->windowSize);
+                        }
+                    }
                 }
-
-                // Check which circle was clicked
-                if (mInsideCircle(car1.beginPos, CIRCLE_R, mousePosF) && activeCar1 && clickedCar){
-                    clickedCar = sfFalse;
-                    activeCar1 = sfFalse;
-                    mChangeVector(&car1, mousePosF);
-                }
-                if (mInsideCircle(car2.beginPos, CIRCLE_R, mousePosF) && !activeCar1 && clickedCar){
-                    clickedCar = sfFalse;
-                    activeCar1 = sfTrue;
-                    mChangeVector(&car2, mousePosF);
-                }
+            } else{
+                mouseHeld = sfFalse;
+                break;
             }
-        } else{
-            mouseHeld = sfFalse;
         }
 
         // Count rotation and vectors
@@ -181,12 +246,13 @@ int gameWindow(){
             else
                 sfRenderWindow_drawCircleShape(gameWindowInfo->window, car2.circle, NULL);
         }
-
+        /*
         // Print a coordinates of the mouse (temp)
         int onTrack = binaryMap[fRound(mousePosF.x * scale)][fRound(mousePosF.y * scale)];
         sprintf(string, "x:%d y:%d onTrack:%d clicks:%d", mousePosI.x, mousePosI.y, onTrack, clicks);
         sfText_setString(text, string);
         sfRenderWindow_drawText(gameWindowInfo->window, text, NULL);
+        */
 
         // Update the window
         sfRenderWindow_display(gameWindowInfo->window);
@@ -198,5 +264,6 @@ int gameWindow(){
     sfFont_destroy(font);
     sfSprite_destroy(gameWindowInfo->backgroundSprite);
     sfRenderWindow_destroy(gameWindowInfo->window);
+    free(gameWindowInfo);
     return 0;
 }

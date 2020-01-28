@@ -48,6 +48,9 @@ int welcomeWindow(){
             // Close window : exit
             if (event.type == sfEvtClosed)
                 sfRenderWindow_close(window1);
+            if (event.type == sfEvtMouseButtonPressed){
+                sfRenderWindow_close(window1);
+            }
         }
 
         // Clear the screen
@@ -63,13 +66,14 @@ int welcomeWindow(){
         sfRenderWindow_display(window1);
 
         // Close the window if pressed
-        if(sfMouse_isButtonPressed(sfMouseLeft) ){
+        /*if(sfMouse_isButtonPressed(sfMouseLeft) ){
             // Check if mouse is inside the window
             sfVector2i mousePos = sfMouse_getPosition((const sfWindow *) window1);
             if(mousePos.x > 0.0 && mousePos.x < welcomeWindowSize.x && mousePos.y > 0.0 && mousePos.y < welcomeWindowSize.y )
                 sfRenderWindow_close(window1);
-        }
+        }*/
     }
+
 
     // Cleanup resources
     sfMusic_destroy(music);
