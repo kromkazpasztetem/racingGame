@@ -21,7 +21,7 @@ Tworzy okno, w którym odbywa się gra.
 * zmiana pozycji samochodzików i ich wektorów po kliknięciu, obrót w kierunku wektora
 * rysowanie aut, wektorów i okręgów
 ###geometry
-Funkcje tworzące wektory i okręgi oraz proste funkcje matematyczne
+Funkcje tworzące wektory i okręgi oraz proste funkcje matematyczne.
 * zaokrąglanie liczby typu `float` do typu całkowitego `int`
 * wartość bezwzględna typu `float`
 * kwadrat liczby typu `float`
