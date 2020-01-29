@@ -12,4 +12,4 @@ typedef struct managerWindowInfo *mWindowInfo;
 
 mWindowInfo mInitInfo(sfRenderWindow* window, sfSprite* sprite, sfVector2u windowSize);
 sfSprite* mCreateSprite(char *fileName, sfBool setCenter);
-mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBool center, char backgroundName []);
+mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBool center, int backgroundID);

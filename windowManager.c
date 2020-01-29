@@ -34,7 +34,7 @@ sfSprite* mCreateSprite(char *fileName, sfBool setCenter){
 
 // Create the window
 
-mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBool center, char backgroundName []){
+mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBool center, int backgroundID){
     sfRenderWindow* window;
     sfSprite* sprite;
 
@@ -64,6 +64,8 @@ mWindowInfo mCreateWindow (const sfUint32 *titlePL, sfVector2u windowSize, sfBoo
     }
 
     // Create background
+    char backgroundName [50];
+    sprintf(backgroundName,"background%d", backgroundID);
     sprite = mCreateSprite(backgroundName, sfFalse);
 
     return mInitInfo(window, sprite, windowSize);

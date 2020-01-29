@@ -21,7 +21,7 @@ struct car initCar(int carID, sfColor color){
     return newCar;
 }
 
-sfBool** readTrack(){
+sfBool** readTrack(int trackID){
 
     // Allocate space
     sfBool **binaryMap;
@@ -33,7 +33,9 @@ sfBool** readTrack(){
     }
 
     // Read a racing track from file as a 0-1 table
-    FILE* binaryFile = fopen( "binaryTrack.txt", "r");
+    char fileName [50];
+    sprintf(fileName,"./tracks/track%d.txt", trackID);
+    FILE* binaryFile = fopen( fileName, "r");
     if( binaryFile == NULL ){
         return NULL;
     }
@@ -43,6 +45,7 @@ sfBool** readTrack(){
             if(getc(binaryFile) == '1')
                 binaryMap[x][y]=sfFalse;
         }
+        getc(binaryFile);
         getc(binaryFile);
     }
     fclose(binaryFile);
@@ -129,18 +132,18 @@ void mDraw(ptrCar carPtr, sfRenderWindow* gameWindow){
     }
 }
 
-int gameWindow(){
+int gameWindow(int trackID){
 
     // Create window, set title, size, background, declare resources
     sfVector2u windowSize;
     windowSize.x = 0;
-    mWindowInfo gameWindowInfo = mCreateWindow(L"Trwa wyścig - Wyścigi samochodowe", windowSize, sfTrue, "background2");
+    mWindowInfo gameWindowInfo = mCreateWindow(L"Trwa wyścig - Wyścigi samochodowe", windowSize, sfTrue, trackID);
     if (gameWindowInfo->window == NULL)
         return 1;
     //sfFont* font;
     sfMusic* music;
     sfEvent event;
-    sfBool** onTrack = readTrack();
+    sfBool** onTrack = readTrack(trackID);
 
     struct car car1 = initCar(1, sfBlue);
     struct car car2 = initCar(2, sfYellow);
@@ -151,16 +154,32 @@ int gameWindow(){
     sizeCar.x = sizeCarTemp.width;
     sizeCar.y = sizeCarTemp.height;
 
-    // Set default position
-    car1.beginPos.x = 850;
-    car1.beginPos.y= 758;
+    // Set default position for each track
+    switch (trackID){
+        case 1:
+            car1.beginPos.x = 850;
+            car1.beginPos.y = 94;
+            car2.beginPos.x = 850;
+            car2.beginPos.y = 52;
+            break;
+        case 2:
+            car1.beginPos.x = 450;
+            car1.beginPos.y = 490;
+            car2.beginPos.x = 450;
+            car2.beginPos.y = 530;
+            break;
+        case 3:
+            car1.beginPos.x = 850;
+            car1.beginPos.y = 758;
+            car2.beginPos.x = 850;
+            car2.beginPos.y = 800;
+            break;
+    }
     car1.endPos = car1.beginPos;
-    car2.beginPos.x = 850;
-    car2.beginPos.y = 800;
     car2.endPos = car2.beginPos;
 
     // Load a music to play
-    music = sfMusic_createFromFile("./music/game_music.wav");
+    music = sfMusic_createFromFile("./music/gameMusic.wav");
     if (!music)
         return 1;
     sfMusic_setLoop(music, sfTrue);
@@ -226,6 +245,11 @@ int gameWindow(){
         // Count rotation and vectors
         mRotate(&car1);
         mRotate(&car2);
+
+        if(car1.vectorLine == NULL && trackID == 2)
+            sfSprite_setRotation(car1.image, 177);
+        if(car2.vectorLine == NULL && trackID == 2)
+            sfSprite_setRotation(car2.image, 177);
 
         // Update position
         mPosition(&car1);

@@ -1,3 +1,3 @@
 #include "headers.h"
 
-int welcomeWindow();
+int welcomeWindow(int* trackIDptr);

@@ -3,7 +3,16 @@ Images:
 		https://www.freepik.com/free-photos-vectors/car - Car vector created by macrovector
 	track:
 		https://commons.wikimedia.org/wiki/File:Circuit_Hokenheimring.svg
+		https://commons.wikimedia.org/wiki/File:Circuit_N%C3%BCrburgring-2002-M%C3%BCllenbach.svg
+		https://upload.wikimedia.org/wikipedia/commons/2/20/TexasMotorSpeedway.svg
 		https://www.dcode.fr/binary-image
+	logos:
+		https://upload.wikimedia.org/wikipedia/de/e/e7/Hockenheimring_Logo.svg
+		https://upload.wikimedia.org/wikipedia/en/4/49/Nurburgring.svg
+
+	background:
+		https://www.freepik.com/free-photos-vectors/background - Background vector created by freepik
+
 Music:
 	welcomeWindow:
 		https://file-examples.com/index.php/sample-audio-files/sample-ogg-download/
