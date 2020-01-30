@@ -46,7 +46,6 @@ sfBool** readTrack(int trackID){
                 binaryMap[x][y]=sfFalse;
         }
         getc(binaryFile);
-        getc(binaryFile);
     }
     fclose(binaryFile);
 

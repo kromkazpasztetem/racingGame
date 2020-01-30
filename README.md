@@ -8,5 +8,5 @@ Aby samochód ruszył, kliknij w obrębie kółka - samochód pojedzie w tym kie
 Teraz jest kolej przeciwnika - najpierw kilka na swój samochód, a potem wybiera kierunek.
 Postaraj się nie wypaść z trasy!
 Wygrywa gracz, który pierwszy przejedzie okrążenie.
-XD
+
 Dobrej zabawy :)
