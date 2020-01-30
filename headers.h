@@ -10,3 +10,4 @@
 #include "welcomeWindow.h"
 #include "gameWindow.h"
 #include "geometry.h"
+#include "goodbyeWindow.h"

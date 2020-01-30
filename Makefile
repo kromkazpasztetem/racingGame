@@ -177,6 +177,33 @@ geometry.c.s:
 	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/geometry.c.s
 .PHONY : geometry.c.s
 
+goodbyeWindow.o: goodbyeWindow.c.o
+
+.PHONY : goodbyeWindow.o
+
+# target to build an object file
+goodbyeWindow.c.o:
+	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/goodbyeWindow.c.o
+.PHONY : goodbyeWindow.c.o
+
+goodbyeWindow.i: goodbyeWindow.c.i
+
+.PHONY : goodbyeWindow.i
+
+# target to preprocess a source file
+goodbyeWindow.c.i:
+	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/goodbyeWindow.c.i
+.PHONY : goodbyeWindow.c.i
+
+goodbyeWindow.s: goodbyeWindow.c.s
+
+.PHONY : goodbyeWindow.s
+
+# target to generate assembly for a file
+goodbyeWindow.c.s:
+	$(MAKE) -f CMakeFiles/fullGame.dir/build.make CMakeFiles/fullGame.dir/goodbyeWindow.c.s
+.PHONY : goodbyeWindow.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -273,6 +300,9 @@ help:
 	@echo "... geometry.o"
 	@echo "... geometry.i"
 	@echo "... geometry.s"
+	@echo "... goodbyeWindow.o"
+	@echo "... goodbyeWindow.i"
+	@echo "... goodbyeWindow.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

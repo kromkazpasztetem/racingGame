@@ -1,5 +1,5 @@
 # racingGame
-Prosta gra napisana w języku C z użyciem biblioteki CSFML.
+Prosta gra napisana w języku C, z użyciem biblioteki CSFML 2.5
 
 ## Kompilacja i uruchamianie
 Pobierz grę, wejdź do katalogu z grą i skompiluj ją poleceniem `make`. Otwórz grę poleceniem `./fullGame`.
@@ -7,5 +7,6 @@ Pobierz grę, wejdź do katalogu z grą i skompiluj ją poleceniem `make`. Otwó
 Aby samochód ruszył, kliknij w obrębie kółka - samochód pojedzie w tym kierunku.
 Teraz jest kolej przeciwnika - najpierw kilka na swój samochód, a potem wybiera kierunek.
 Postaraj się nie wypaść z trasy!
+Wygrywa gracz, który pierwszy przejedzie okrążenie.
 
 Dobrej zabawy :)

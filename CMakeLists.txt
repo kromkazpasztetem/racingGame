@@ -3,5 +3,5 @@ project(racingGame C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(fullGame main.c welcomeWindow.c gameWindow.c windowManager.c geometry.c geometry.h)
+add_executable(fullGame main.c welcomeWindow.c gameWindow.c windowManager.c geometry.c geometry.h goodbyeWindow.c goodbyeWindow.h)
 target_link_libraries(fullGame csfml-graphics csfml-audio csfml-window csfml-system m)

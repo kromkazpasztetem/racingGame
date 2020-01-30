@@ -18,6 +18,12 @@ float fSquare(float a){
     return a*a;
 }
 
+/*void fSwap(float* a, float* b){
+    float c = *a;
+    *a = *b;
+    *b = c;
+}*/
+
 sfCircleShape *mCircle(float radius, sfColor outlineColor){
 
     // Create a circle around of the car
@@ -70,9 +76,9 @@ sfRectangleShape* mVectorLine(sfVector2f fromPos, sfVector2f toPos, sfColor colo
     float deg;
     if(fromPos.x == toPos.x){
         if(fromPos.x > toPos.x)
-            deg=270;
-        else
             deg=90;
+        else
+            deg=270;
     } else{
         deg= atan2f(fromPos.y - toPos.y, fromPos.x - toPos.x);
 
@@ -101,6 +107,55 @@ sfBool mInsideCircle(sfVector2f origin, float radius, sfVector2f point){
 
     // |x1-x2|^2 + |y1-y2|^2 <= r^2, circle definition
     if( fSquare(fAbs(origin.x-point.x)) + fSquare(fAbs(origin.y-point.y)) <= fSquare(radius) )
+        return sfTrue;
+    return sfFalse;
+}
+
+// Check if two line segments have common point
+
+sfBool mCrossLines(sfVector2f m1, sfVector2f m2, sfVector2f n1, sfVector2f n2){
+    sfVector2f deltaM, deltaN;
+    deltaM.y = m2.y - m1.y;
+    deltaM.x = m2.x - m1.x;
+    if( (deltaM.x == 0 && deltaM.y == 0) || (deltaN.x == 0 && deltaN.y == 0) )
+        return sfFalse;
+
+    deltaN.y = n2.y - n1.y;
+    deltaN.x = n2.x - n1.x;
+
+    sfVector2f point;
+    float aM, aN, bM, bN;
+
+    if(deltaM.x == 0){
+        if(deltaN.x == 0)
+            return sfFalse;
+        point.x = m1.x;
+    } else{
+        aM = deltaM.y / deltaM.x;
+        bM = m1.y - aM * m1.x;
+    }
+    if(deltaN.x == 0){
+        point.x = n1.x;
+    }else{
+        aN = deltaN.y / deltaN.x;
+        bN = n1.y - aN * n1.x;
+    }
+
+    if(deltaM.x == 0){
+        point.y = aN * point.x + bN;
+    } else if(deltaN.x == 0){
+        point.y = aM * point.x + bM;
+    } else{
+        if (aM == aN)
+            return sfFalse;
+        point.x = (bN - bM) / (aM - aN);
+        point.y = aM * point.x + bM;
+    }
+
+    if( fAbs(point.x-m1.x) <= fAbs(deltaM.x) && fAbs(point.x - m2.x) <= fAbs(deltaM.x) &&
+        fAbs(point.x-n1.x) <= fAbs(deltaN.x) && fAbs(point.x - n2.x) <= fAbs(deltaN.x) &&
+        fAbs(point.y-m1.y) <= fAbs(deltaM.y) && fAbs(point.y - m2.y) <= fAbs(deltaM.y) &&
+        fAbs(point.y-n1.y) <= fAbs(deltaN.y) && fAbs(point.y - n2.y) <= fAbs(deltaN.y)   )
         return sfTrue;
     return sfFalse;
 }

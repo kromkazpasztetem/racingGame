@@ -5,6 +5,7 @@ CMakeFiles/fullGame.dir/gameWindow.c.o
  /home/rozkurcz/Dokumenty/c/game1/gameWindow.c
  /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
  /home/rozkurcz/Dokumenty/c/game1/geometry.h
+ /home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/headers.h
  /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/windowManager.h
@@ -12,12 +13,22 @@ CMakeFiles/fullGame.dir/geometry.c.o
  /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
  /home/rozkurcz/Dokumenty/c/game1/geometry.c
  /home/rozkurcz/Dokumenty/c/game1/geometry.h
+ /home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.h
+ /home/rozkurcz/Dokumenty/c/game1/headers.h
+ /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
+ /home/rozkurcz/Dokumenty/c/game1/windowManager.h
+CMakeFiles/fullGame.dir/goodbyeWindow.c.o
+ /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
+ /home/rozkurcz/Dokumenty/c/game1/geometry.h
+ /home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.c
+ /home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/headers.h
  /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/windowManager.h
 CMakeFiles/fullGame.dir/main.c.o
  /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
  /home/rozkurcz/Dokumenty/c/game1/geometry.h
+ /home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/headers.h
  /home/rozkurcz/Dokumenty/c/game1/main.c
  /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
@@ -25,6 +36,7 @@ CMakeFiles/fullGame.dir/main.c.o
 CMakeFiles/fullGame.dir/welcomeWindow.c.o
  /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
  /home/rozkurcz/Dokumenty/c/game1/geometry.h
+ /home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/headers.h
  /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.c
  /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
@@ -32,6 +44,7 @@ CMakeFiles/fullGame.dir/welcomeWindow.c.o
 CMakeFiles/fullGame.dir/windowManager.c.o
  /home/rozkurcz/Dokumenty/c/game1/gameWindow.h
  /home/rozkurcz/Dokumenty/c/game1/geometry.h
+ /home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/headers.h
  /home/rozkurcz/Dokumenty/c/game1/welcomeWindow.h
  /home/rozkurcz/Dokumenty/c/game1/windowManager.c

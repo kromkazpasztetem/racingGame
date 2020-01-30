@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/home/rozkurcz/Dokumenty/c/game1/gameWindow.c" "/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/fullGame.dir/gameWindow.c.o"
   "/home/rozkurcz/Dokumenty/c/game1/geometry.c" "/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/fullGame.dir/geometry.c.o"
+  "/home/rozkurcz/Dokumenty/c/game1/goodbyeWindow.c" "/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/fullGame.dir/goodbyeWindow.c.o"
   "/home/rozkurcz/Dokumenty/c/game1/main.c" "/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/fullGame.dir/main.c.o"
   "/home/rozkurcz/Dokumenty/c/game1/welcomeWindow.c" "/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/fullGame.dir/welcomeWindow.c.o"
   "/home/rozkurcz/Dokumenty/c/game1/windowManager.c" "/home/rozkurcz/Dokumenty/c/game1/CMakeFiles/fullGame.dir/windowManager.c.o"

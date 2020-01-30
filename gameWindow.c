@@ -132,13 +132,52 @@ void mDraw(ptrCar carPtr, sfRenderWindow* gameWindow){
     }
 }
 
-int gameWindow(int trackID){
+void mSetStartPos(ptrCar carPtr1, ptrCar carPtr2, sfVector2f* finish1, sfVector2f* finish2, int trackID){
+    switch (trackID){
+        case 1:
+            carPtr1->beginPos.x = 834;
+            carPtr1->beginPos.y = 94;
+            carPtr2->beginPos.x = 834;
+            carPtr2->beginPos.y = 52;
+            finish1->x = 836;
+            finish1->y = 20;
+            finish2->x = 836;
+            finish2->y = 120;
+            break;
+        case 2:
+            carPtr1->beginPos.x = 450;
+            carPtr1->beginPos.y = 490;
+            carPtr2->beginPos.x = 450;
+            carPtr2->beginPos.y = 530;
+            finish1->x = 440;
+            finish1->y = 450;
+            finish2->x = 450;
+            finish2->y = 560;
+            break;
+        case 3:
+            carPtr1->beginPos.x = 894;
+            carPtr1->beginPos.y = 758;
+            carPtr2->beginPos.x = 894;
+            carPtr2->beginPos.y = 800;
+            finish1->x = carPtr1->beginPos.x+2;
+            finish1->y = 724;
+            finish2->x = finish1->x;
+            finish2->y = 828;
+            break;
+    }
+    carPtr1->endPos = carPtr1->beginPos;
+    carPtr2->endPos = carPtr2->beginPos;
+}
+
+int gameWindow(int trackID, sfBool* winnerPlayer1){
+
+    int closed = 0;
 
     // Create window, set title, size, background, declare resources
     sfVector2u windowSize;
     windowSize.x = 0;
-    mWindowInfo gameWindowInfo = mCreateWindow(L"Trwa wyścig - Wyścigi samochodowe", windowSize, sfTrue, trackID);
-    if (gameWindowInfo->window == NULL)
+    mWindowInfo window2Info = mCreateWindow(L"Wyścigi samochodowe - trwa wyścig", windowSize, sfTrue, trackID);
+    if (window2Info->window == NULL)
         return 1;
     //sfFont* font;
     sfMusic* music;
@@ -155,28 +194,8 @@ int gameWindow(int trackID){
     sizeCar.y = sizeCarTemp.height;
 
     // Set default position for each track
-    switch (trackID){
-        case 1:
-            car1.beginPos.x = 850;
-            car1.beginPos.y = 94;
-            car2.beginPos.x = 850;
-            car2.beginPos.y = 52;
-            break;
-        case 2:
-            car1.beginPos.x = 450;
-            car1.beginPos.y = 490;
-            car2.beginPos.x = 450;
-            car2.beginPos.y = 530;
-            break;
-        case 3:
-            car1.beginPos.x = 850;
-            car1.beginPos.y = 758;
-            car2.beginPos.x = 850;
-            car2.beginPos.y = 800;
-            break;
-    }
-    car1.endPos = car1.beginPos;
-    car2.endPos = car2.beginPos;
+    sfVector2f finish1, finish2;
+    mSetStartPos(&car1, &car2, &finish1, &finish2, trackID);
 
     // Load a music to play
     music = sfMusic_createFromFile("./music/gameMusic.wav");
@@ -193,21 +212,21 @@ int gameWindow(int trackID){
     sfBool clickedCar = sfTrue;
 
     // Start the game loop
-    while (sfRenderWindow_isOpen(gameWindowInfo->window))
+    while (sfRenderWindow_isOpen(window2Info->window))
     {
         // Save a mouse position
-        sfVector2i mousePosI = sfMouse_getPosition((const sfWindow *) gameWindowInfo->window);
+        sfVector2i mousePosI = sfMouse_getPosition((const sfWindow *) window2Info->window);
         sfVector2f mousePosF;
         mousePosF.x = (float) mousePosI.x;
         mousePosF.y = (float) mousePosI.y;
 
         // Process events
-        while (sfRenderWindow_pollEvent(gameWindowInfo->window, &event))
+        while (sfRenderWindow_pollEvent(window2Info->window, &event))
         {
             // Close window : exit
             if (event.type == sfEvtClosed){
-                sfRenderWindow_close(gameWindowInfo->window);
-                return 0;
+                sfRenderWindow_close(window2Info->window);
+                closed +=2;
             }
             if (event.type == sfEvtMouseButtonPressed){
                 if(!mouseHeld){
@@ -222,17 +241,30 @@ int gameWindow(int trackID){
                             clickedCar = sfTrue;
                         }
                     }else{
+                        sfVector2f startPos1, startPos2;
+                        startPos1 = car1.beginPos;
+                        startPos2 = car2.beginPos;
 
                         // Check which circle was clicked
                         if (mInsideCircle(car1.beginPos, CIRCLE_R, mousePosF) && activeCar1 && clickedCar){
                             clickedCar = sfFalse;
                             activeCar1 = sfFalse;
-                            mChangeVector(&car1, mousePosF, onTrack, gameWindowInfo->windowSize);
+                            mChangeVector(&car1, mousePosF, onTrack, window2Info->windowSize);
                         }
                         if (mInsideCircle(car2.beginPos, CIRCLE_R, mousePosF) && !activeCar1 && clickedCar){
                             clickedCar = sfFalse;
                             activeCar1 = sfTrue;
-                            mChangeVector(&car2, mousePosF, onTrack, gameWindowInfo->windowSize);
+                            mChangeVector(&car2, mousePosF, onTrack, window2Info->windowSize);
+                        }
+
+                        if(startPos1.x != car1.beginPos.x) {
+                            if (mCrossLines(startPos1, car1.beginPos, finish1, finish2))
+                                sfRenderWindow_close(window2Info->window);
+                        } else if (startPos2.x != car2.beginPos.x){
+                            if (mCrossLines(startPos2, car2.beginPos, finish1, finish2)){
+                                sfRenderWindow_close(window2Info->window);
+                                *winnerPlayer1 = sfFalse;
+                            }
                         }
                     }
                 }
@@ -256,30 +288,30 @@ int gameWindow(int trackID){
         mPosition(&car2);
 
         // Clear the screen
-        sfRenderWindow_clear(gameWindowInfo->window, sfBlack);
+        sfRenderWindow_clear(window2Info->window, sfBlack);
 
         // Draw background, cars, vectors
-        sfRenderWindow_drawSprite(gameWindowInfo->window, gameWindowInfo->backgroundSprite, NULL);
-        mDraw(&car1, gameWindowInfo->window);
-        mDraw(&car2, gameWindowInfo->window);
+        sfRenderWindow_drawSprite(window2Info->window, window2Info->backgroundSprite, NULL);
+        mDraw(&car1, window2Info->window);
+        mDraw(&car2, window2Info->window);
 
         // Draw circle when car was clicked
         if(clickedCar){
             if(activeCar1)
-                sfRenderWindow_drawCircleShape(gameWindowInfo->window, car1.circle, NULL);
+                sfRenderWindow_drawCircleShape(window2Info->window, car1.circle, NULL);
             else
-                sfRenderWindow_drawCircleShape(gameWindowInfo->window, car2.circle, NULL);
+                sfRenderWindow_drawCircleShape(window2Info->window, car2.circle, NULL);
         }
 
         // Update the window
-        sfRenderWindow_display(gameWindowInfo->window);
+        sfRenderWindow_display(window2Info->window);
     }
 
     // Cleanup resources
     sfMusic_destroy(music);
-    sfSprite_destroy(gameWindowInfo->backgroundSprite);
-    sfRenderWindow_destroy(gameWindowInfo->window);
-    free(gameWindowInfo);
+    sfSprite_destroy(window2Info->backgroundSprite);
+    sfRenderWindow_destroy(window2Info->window);
+    free(window2Info);
     free(onTrack);
-    return 0;
+    return 0 + closed;
 }

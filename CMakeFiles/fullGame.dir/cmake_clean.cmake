@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/fullGame.dir/gameWindow.c.o"
   "CMakeFiles/fullGame.dir/geometry.c.o"
+  "CMakeFiles/fullGame.dir/goodbyeWindow.c.o"
   "CMakeFiles/fullGame.dir/main.c.o"
   "CMakeFiles/fullGame.dir/welcomeWindow.c.o"
   "CMakeFiles/fullGame.dir/windowManager.c.o"

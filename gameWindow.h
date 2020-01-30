@@ -18,4 +18,4 @@ void mChangeVector(ptrCar carPtr, sfVector2f mousePos, sfBool** onTrack, sfVecto
 void mRotate(ptrCar carPtr);
 void mPosition(ptrCar carPtr);
 void mDraw(ptrCar carPtr, sfRenderWindow* gameWindow);
-int gameWindow(int trackID);
+int gameWindow(int trackID, sfBool* winnerPlayer1);
